@@ -1,0 +1,22 @@
+{
+  "recorded_at": "2026-09-21T10:31:00Z",
+  "workflow_id": "synthetic-bank-001",
+  "step_id": "S16",
+  "agent_id": "workflow-agent-01",
+  "action_class": "COMMIT_ACCOUNT_CHANGE",
+  "tool_name": "account_change_api",
+  "risk_tier": "HIGH",
+  "action_fingerprint": "a2591acc443f91d5c5be9d85a9b63e35d716763756e900db812d7a9233b1644d",
+  "disposition": "ALLOW",
+  "reason": "authorized",
+  "permit_issued": true,
+  "trace": [
+    {"check":"agent_registry","status":"PASS","detail":"agent is registered"},
+    {"check":"delegated_action","status":"PASS","detail":"action class is delegated"},
+    {"check":"tool_permission","status":"PASS","detail":"tool is approved"},
+    {"check":"risk_ceiling","status":"PASS","detail":"risk tier is within agent ceiling"},
+    {"check":"confidence","status":"PASS","detail":"confidence meets 0.90 threshold"},
+    {"check":"human_approval","status":"PASS","detail":"required human approval is present"},
+    {"check":"disposition","status":"PASS","detail":"all declared checks passed"}
+  ]
+}

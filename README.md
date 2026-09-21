@@ -7,6 +7,20 @@
 ![Reference Tests](https://img.shields.io/badge/governance%20tests-13-informational)
 ![Data](https://img.shields.io/badge/examples-synthetic-success)
 
+## 3-minute executive review
+
+**[Open the live Sentinel governance demo](https://morbiaus.github.io/sentinel-governed-workflow-twin/)**
+
+![Decision X-Ray](docs/assets/decision-xray-poster.png)
+
+A fast review path:
+
+1. **See the workflow transformation** — [baseline vs. governed redesign](docs/workflow-before-after.md)
+2. **Inspect the authorization boundary** — use the scenarios in the [live demo](https://morbiaus.github.io/sentinel-governed-workflow-twin/)
+3. **Inspect the decision evidence** — [sample evidence record](examples/evidence_record.example.json)
+4. **Run the reference engine** — [three-minute demo instructions](RUN_DEMO.md)
+5. **Inspect the tests** — [governance test suite](tests/)
+
 Sentinel Governed Workflow Twin demonstrates a specific proposition:
 
 > **An AI system may be capable of taking an action without being authorized to take that action.**
@@ -73,6 +87,7 @@ cd sentinel-governed-workflow-twin
 
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\activate
+python -m pip install --upgrade pip
 pip install -e ".[dev]"
 
 pytest -q
@@ -105,6 +120,7 @@ sentinel-governed-workflow-twin/
 │   ├── capability-vs-authority.md
 │   ├── evidence-model.md
 │   └── framework-alignment.md
+├── RUN_DEMO.md
 ├── tests/
 ├── .github/workflows/ci.yml
 └── SECURITY.md

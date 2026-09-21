@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sentinel Evidence Sample</title><style>body{margin:0;background:#071019;color:#eef5f7;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.wrap{max-width:980px;margin:auto;padding:38px 20px}h1{font-family:Inter,system-ui,sans-serif;font-size:38px;letter-spacing:-.03em}p{font-family:Inter,system-ui,sans-serif;color:#a5b8c3;line-height:1.6}pre{padding:22px;border:1px solid #294153;border-radius:18px;background:#0b1620;white-space:pre-wrap;overflow:auto;line-height:1.55}.ok{color:#7bd88f}a{color:#65d6e8}</style></head>
+<body><main class="wrap"><p><a href="./">&lt;- Back to Sentinel demo</a></p><h1>Decision evidence sample</h1><p>This synthetic record illustrates what an independent reviewer can reconstruct after a governed high-risk action is approved.</p><pre>{
+  "recorded_at": "2026-09-21T10:31:00Z",
+  "workflow_id": "synthetic-bank-001",
+  "step_id": "S16",
+  "agent_id": "workflow-agent-01",
+  "action_class": "COMMIT_ACCOUNT_CHANGE",
+  "tool_name": "account_change_api",
+  "risk_tier": "HIGH",
+  "action_fingerprint": "a2591acc443f91d5c5be9d85a9b63e35d716763756e900db812d7a9233b1644d",
+  "disposition": "ALLOW",
+  "reason": "authorized",
+  "permit_issued": true,
+  "trace": [
+    {"check":"agent_registry","status":"PASS","detail":"agent is registered"},
+    {"check":"delegated_action","status":"PASS","detail":"action class is delegated"},
+    {"check":"tool_permission","status":"PASS","detail":"tool is approved"},
+    {"check":"risk_ceiling","status":"PASS","detail":"risk tier is within agent ceiling"},
+    {"check":"confidence","status":"PASS","detail":"confidence meets 0.90 threshold"},
+    {"check":"human_approval","status":"PASS","detail":"required human approval is present"},
+    {"check":"disposition","status":"PASS","detail":"all declared checks passed"}
+  ]
+}</pre><p class="ok">Disposition: ALLOW - Execution permit issued - Evidence trace complete</p></main></body></html>
