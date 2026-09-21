@@ -1,0 +1,9 @@
+{
+  "scenario": "synthetic-bank-001",
+  "label": "Illustrative governed redesign",
+  "cycle_time_minutes": 190,
+  "cost_units": 36,
+  "quality_defect_rate": 0.02,
+  "human_touches": 6,
+  "evidence_completeness": 1.0
+}
