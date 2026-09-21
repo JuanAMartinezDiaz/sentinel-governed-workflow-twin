@@ -1,0 +1,24 @@
+{
+  "workflow_id": "synthetic-bank-001",
+  "title": "Synthetic Customer Account Exception Workflow",
+  "disclaimer": "Fictional public-safe workflow for governance testing. Not based on any employer or client process.",
+  "steps": [
+    {"id":"S01","name":"Receive exception request","baseline_mode":"HUMAN","proposed_mode":"ASSIST","action_class":"READ_CASE","risk_tier":"LOW","human_approval":false},
+    {"id":"S02","name":"Validate request completeness","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"VALIDATE_INPUT","risk_tier":"LOW","human_approval":false},
+    {"id":"S03","name":"Retrieve customer profile","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"READ_CASE","risk_tier":"MODERATE","human_approval":false},
+    {"id":"S04","name":"Retrieve account state","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"READ_CASE","risk_tier":"MODERATE","human_approval":false},
+    {"id":"S05","name":"Check data provenance","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"VALIDATE_INPUT","risk_tier":"MODERATE","human_approval":false},
+    {"id":"S06","name":"Classify exception type","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"CLASSIFY_CASE","risk_tier":"MODERATE","human_approval":false},
+    {"id":"S07","name":"Apply policy retrieval","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"READ_POLICY","risk_tier":"LOW","human_approval":false},
+    {"id":"S08","name":"Identify missing evidence","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"DRAFT_RECOMMENDATION","risk_tier":"MODERATE","human_approval":false},
+    {"id":"S09","name":"Request additional evidence","baseline_mode":"HUMAN","proposed_mode":"ASSIST","action_class":"DRAFT_COMMUNICATION","risk_tier":"MODERATE","human_approval":true},
+    {"id":"S10","name":"Assess exception risk","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"DRAFT_RECOMMENDATION","risk_tier":"HIGH","human_approval":false},
+    {"id":"S11","name":"Generate recommended disposition","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"DRAFT_RECOMMENDATION","risk_tier":"HIGH","human_approval":false},
+    {"id":"S12","name":"Independent control check","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"CONTROL_CHECK","risk_tier":"HIGH","human_approval":false},
+    {"id":"S13","name":"Human decision review","baseline_mode":"HUMAN","proposed_mode":"HUMAN","action_class":"APPROVE_DECISION","risk_tier":"HIGH","human_approval":true},
+    {"id":"S14","name":"Prepare customer communication","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"DRAFT_COMMUNICATION","risk_tier":"MODERATE","human_approval":false},
+    {"id":"S15","name":"Approval before state change","baseline_mode":"HUMAN","proposed_mode":"HUMAN","action_class":"APPROVE_EXECUTION","risk_tier":"HIGH","human_approval":true},
+    {"id":"S16","name":"Commit approved account change","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"COMMIT_ACCOUNT_CHANGE","risk_tier":"HIGH","human_approval":true},
+    {"id":"S17","name":"Write evidence and close case","baseline_mode":"HUMAN","proposed_mode":"AGENT","action_class":"WRITE_EVIDENCE","risk_tier":"MODERATE","human_approval":false}
+  ]
+}
