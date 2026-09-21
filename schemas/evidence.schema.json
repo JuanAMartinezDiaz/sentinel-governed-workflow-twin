@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://juanmartinez.ai/schemas/sentinel-evidence.schema.json",
+  "title": "Sentinel Decision Evidence Record",
+  "type": "object",
+  "required": [
+    "recorded_at","workflow_id","step_id","agent_id","action_class","tool_name",
+    "risk_tier","action_fingerprint","disposition","reason","permit_issued","trace"
+  ],
+  "properties": {
+    "recorded_at": {"type": "string"},
+    "workflow_id": {"type": "string"},
+    "step_id": {"type": "string"},
+    "agent_id": {"type": "string"},
+    "action_class": {"type": "string"},
+    "tool_name": {"type": "string"},
+    "risk_tier": {"enum": ["LOW","MODERATE","HIGH","CRITICAL"]},
+    "action_fingerprint": {"type": "string", "minLength": 64, "maxLength": 64},
+    "disposition": {"enum": ["ALLOW","REQUIRE_APPROVAL","DENY","FALLBACK"]},
+    "reason": {"type": "string"},
+    "permit_issued": {"type": "boolean"},
+    "trace": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["check","status","detail"],
+        "properties": {
+          "check": {"type": "string"},
+          "status": {"type": "string"},
+          "detail": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
