@@ -5,9 +5,9 @@ const scene=new THREE.Scene();
 scene.fog=new THREE.FogExp2(0x04101a,.055);
 const camera=new THREE.PerspectiveCamera(42,1,.1,80);
 camera.position.set(0,3.25,13.7);
-const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true,powerPreference:"high-performance"});
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:"high-performance"});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-renderer.setClearColor(0x04101a,0);
+renderer.setClearColor(0x04101a,1);
 renderer.toneMapping=THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure=1.25;
 
