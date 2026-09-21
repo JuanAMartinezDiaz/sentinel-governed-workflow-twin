@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.1 — 2026-09-21
+
+Decision X-Ray rendering correction.
+
+- Removed recursive fallback screenshot from beneath the live WebGL canvas
+- Made the WebGL renderer opaque to prevent text and controls bleeding through the 3D chamber
+- Replaced the public preview with a clean render
+- Added a regression test for the rendering boundary
+
 ## 0.2.0 — 2026-09-21
 
 Decision X-Ray 2.0 public experience.
