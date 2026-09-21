@@ -29,7 +29,7 @@ pytest -q
 python -m sentinel_ref.cli
 ~~~
 
-Expected: **13 passed**, then the demo returns REQUIRE_APPROVAL without human approval and ALLOW with approval.
+Expected: **15 passed**, then the demo returns REQUIRE_APPROVAL without human approval and ALLOW with approval.
 
 The reference is intentionally small enough to inspect. It proves that action generation alone does not authorize execution, direct protected execution fails closed, insufficient confidence selects fallback, and every governance decision emits evidence.
 

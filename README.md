@@ -76,7 +76,7 @@ The protected executor rejects direct execution unless the action carries a vali
 - **Evidence Ledger** — structured decision trace including action fingerprint, disposition, checks, and permit status.
 - **Outcome Metrics** — baseline-to-redesign comparison for cycle time, cost units, defects, human touches, and evidence completeness.
 - **Synthetic 17-step financial-services workflow** — a reproducible enterprise-style example containing low-, moderate-, and high-risk steps.
-- **13 reference governance tests** — including direct-execution rejection and permit-tampering tests.
+- **15 reference governance tests** — including direct-execution rejection and permit-tampering tests.
 - **Continuous Integration** — GitHub Actions runs the test suite on every push and pull request.
 
 ## Quick start
