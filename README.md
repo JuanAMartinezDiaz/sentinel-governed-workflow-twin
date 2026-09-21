@@ -20,6 +20,7 @@ A fast review path:
 3. **Inspect the decision evidence** — [sample evidence record](examples/evidence_record.example.json)
 4. **Run the reference engine** — [three-minute demo instructions](RUN_DEMO.md)
 5. **Inspect the tests** — [governance test suite](tests/)
+6. **Inspect the security model** — [public threat model](docs/threat-model.md)
 
 Sentinel Governed Workflow Twin demonstrates a specific proposition:
 
@@ -76,8 +77,9 @@ The protected executor rejects direct execution unless the action carries a vali
 - **Evidence Ledger** — structured decision trace including action fingerprint, disposition, checks, and permit status.
 - **Outcome Metrics** — baseline-to-redesign comparison for cycle time, cost units, defects, human touches, and evidence completeness.
 - **Synthetic 17-step financial-services workflow** — a reproducible enterprise-style example containing low-, moderate-, and high-risk steps.
-- **15 reference governance tests** — including direct-execution rejection and permit-tampering tests.
+- **16 reference governance tests** — including direct-execution rejection and permit-tampering tests.
 - **Continuous Integration** — GitHub Actions runs the test suite on every push and pull request.
+- **Threat model** — documented misuse cases, trust boundaries, mitigations, and deliberate limitations.
 
 ## Quick start
 
