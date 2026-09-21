@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://juanmartinez.ai/schemas/sentinel-workflow.schema.json",
+  "title": "Sentinel Synthetic Workflow Twin",
+  "type": "object",
+  "required": ["workflow_id", "title", "disclaimer", "steps"],
+  "properties": {
+    "workflow_id": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "disclaimer": {"type": "string", "minLength": 1},
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id","name","baseline_mode","proposed_mode","action_class","risk_tier","human_approval"],
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "baseline_mode": {"enum": ["HUMAN","ASSIST","AGENT"]},
+          "proposed_mode": {"enum": ["HUMAN","ASSIST","AGENT"]},
+          "action_class": {"type": "string"},
+          "risk_tier": {"enum": ["LOW","MODERATE","HIGH","CRITICAL"]},
+          "human_approval": {"type": "boolean"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
