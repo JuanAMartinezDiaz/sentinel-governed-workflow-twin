@@ -1,0 +1,9 @@
+{
+  "scenario": "synthetic-bank-001",
+  "label": "Illustrative baseline",
+  "cycle_time_minutes": 960,
+  "cost_units": 100,
+  "quality_defect_rate": 0.075,
+  "human_touches": 17,
+  "evidence_completeness": 0.45
+}
