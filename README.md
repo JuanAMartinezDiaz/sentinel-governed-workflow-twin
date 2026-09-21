@@ -11,7 +11,7 @@
 
 **[Open the live Sentinel governance demo](https://morbiaus.github.io/sentinel-governed-workflow-twin/)**
 
-![Decision X-Ray](docs/assets/decision-xray-poster.png)
+![Decision X-Ray 2.0](docs/assets/decision-xray2-live.png)
 
 A fast review path:
 

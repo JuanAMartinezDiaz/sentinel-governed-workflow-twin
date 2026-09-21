@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.0 — 2026-09-21
+
+Decision X-Ray 2.0 public experience.
+
+- Replaced the legacy static hero with a live Three.js governance chamber
+- Added animated proposal, authorization gate, human authority, execution permit, protected execution, and evidence stages
+- Added scenario-driven ALLOW, REQUIRE_APPROVAL, FALLBACK, and BYPASS/BLOCKED states
+- Added live decision trace and scenario explanation panel
+- Added responsive desktop/mobile behavior
+- Added public render-integrity test for the Decision X-Ray 2.0 entry point
+
 ## 0.1.0 — 2026-09-21
 
 Initial public reference release.

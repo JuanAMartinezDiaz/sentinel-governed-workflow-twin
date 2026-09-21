@@ -1,11 +1,106 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sentinel Governed Workflow Twin</title><meta name="description" content="Interactive public-safe demonstration of governed agentic workflow execution, decision authority, evidence, and measurable workflow redesign.">
-<style>:root{--bg:#071019;--panel:#0d1824;--line:#294153;--text:#eef5f7;--muted:#9bb0bd;--cyan:#65d6e8;--blue:#6ea8ff;--green:#7bd88f;--amber:#f2c96d}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#132a3a 0,#071019 38%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--cyan)}.shell{max-width:1180px;margin:auto;padding:32px 22px 72px}.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);font-weight:700}h1{font-size:clamp(38px,6vw,72px);line-height:.98;letter-spacing:-.045em;margin:12px 0 18px;max-width:950px}.lede{max-width:850px;color:var(--muted);font-size:18px;line-height:1.65}.badges{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 38px}.badge{border:1px solid var(--line);background:#0c1722;padding:7px 11px;border-radius:999px;color:#c7d5dc;font-size:12px}.hero{display:grid;grid-template-columns:1.08fr .92fr;gap:22px;align-items:stretch;margin:24px 0 44px}.card{border:1px solid var(--line);background:linear-gradient(180deg,rgba(18,33,47,.92),rgba(10,20,30,.96));border-radius:24px;padding:22px;box-shadow:0 18px 50px rgba(0,0,0,.24)}.hero img{width:100%;height:100%;min-height:300px;object-fit:cover;border-radius:17px;border:1px solid #334d60}.kicker{color:var(--muted);font-size:14px}.big{font-size:42px;font-weight:750;letter-spacing:-.04em;margin:8px 0}.rule{height:1px;background:var(--line);margin:20px 0}.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.flow div{min-height:92px;padding:13px;border:1px solid var(--line);border-radius:14px;background:#0b1722;font-size:13px}.flow strong{display:block;color:white;margin-bottom:6px}.flow .gate{border-color:#8e7138;background:#241e11}.flow .permit{border-color:#356c76;background:#0c2228}.flow .evidence{border-color:#396e49;background:#102419}section{margin-top:52px}h2{font-size:30px;letter-spacing:-.025em;margin-bottom:10px}.sub{color:var(--muted);line-height:1.6;max-width:850px}.compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.lane{border:1px solid var(--line);border-radius:20px;padding:20px;background:#0b1620}.lane h3{margin:0 0 12px}.steps{display:grid;gap:8px}.step{display:flex;gap:12px;align-items:flex-start;padding:10px 12px;border-radius:12px;background:#101e2b;border:1px solid #263d4d}.step .n{font-size:11px;color:var(--cyan);font-weight:750;min-width:28px}.step small{color:var(--muted)}.agent{border-left:3px solid var(--cyan)}.human{border-left:3px solid var(--amber)}.assist{border-left:3px solid var(--blue)}.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:22px}.metric{padding:18px;border:1px solid var(--line);background:#0b1620;border-radius:18px}.metric b{font-size:26px;display:block}.metric small{color:var(--muted)}.demo{display:grid;grid-template-columns:.9fr 1.1fr;gap:18px;margin-top:22px}.controls button{width:100%;text-align:left;border:1px solid var(--line);background:#101f2d;color:var(--text);padding:14px 16px;border-radius:12px;margin:7px 0;cursor:pointer;font-weight:650}.controls button:hover{border-color:var(--cyan)}pre{white-space:pre-wrap;word-break:break-word;background:#071018;border:1px solid #294153;padding:18px;border-radius:16px;color:#cce2ea;min-height:315px;overflow:auto}.legend{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0;color:var(--muted);font-size:13px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px}.footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}@media(max-width:900px){.hero,.compare,.demo{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr 1fr}.metrics{grid-template-columns:1fr 1fr}.hero img{min-height:220px}}@media(max-width:560px){.flow{grid-template-columns:1fr 1fr}.metrics{grid-template-columns:1fr}.shell{padding:24px 15px 48px}}</style></head>
-<body><main class="shell"><div class="eyebrow">Sentinel - Public Reference Implementation</div><h1>Capability is not authority.</h1><p class="lede">Sentinel demonstrates how an enterprise workflow can gain agentic capability without surrendering decision authority. Consequential actions pass through explicit identity, tool, risk, confidence, approval, and evidence controls before execution.</p><div class="badges"><span class="badge">16 governance tests</span><span class="badge">Synthetic data only</span><span class="badge">Python reference engine</span><span class="badge">Protected execution permit</span><span class="badge">Evidence ledger</span></div>
-<div class="hero"><div class="card"><img src="assets/decision-xray-poster.png" alt="Decision X-Ray governance visualization"></div><div class="card"><div class="kicker">Reference invariant</div><div class="big">The agent can propose. The governance layer decides whether it may act.</div><div class="rule"></div><div class="flow"><div><strong>1. Workflow</strong>Model the work and baseline.</div><div><strong>2. Proposal</strong>Agent proposes an action.</div><div class="gate"><strong>3. Authority Gate</strong>Identity, tool, risk, confidence, approval.</div><div class="permit"><strong>4. Permit</strong>Authorization binds to the exact action.</div><div><strong>5. Execute</strong>Protected executor rejects direct bypass.</div><div class="evidence"><strong>6. Evidence</strong>Record decision path and outcome.</div></div></div></div>
-<section><div class="eyebrow">Workflow intelligence</div><h2>17 human steps become a governed human-agent workflow.</h2><p class="sub">The example below is fictional. It demonstrates the design pattern: automate low-risk work, retain human authority at material decision points, and require approval before consequential state change.</p><div class="legend"><span><i class="dot" style="background:var(--cyan)"></i>Agent</span><span><i class="dot" style="background:var(--blue)"></i>AI assist</span><span><i class="dot" style="background:var(--amber)"></i>Human authority</span></div><div class="compare"><div class="lane"><h3>Baseline</h3><p class="sub">17 human touches. Sequential processing. Partial decision evidence.</p><div class="steps" id="baseline"></div></div><div class="lane"><h3>Governed redesign</h3><p class="sub">Agents perform bounded work. Humans retain consequential decision and execution authority.</p><div class="steps" id="redesign"></div></div></div></section>
-<section><div class="eyebrow">Illustrative measurement</div><h2>Governance should prove whether the redesign helped.</h2><p class="sub">These are synthetic design targets, not production or client claims. They demonstrate the measurement contract Sentinel expects before an AI workflow is declared successful.</p><div class="metrics"><div class="metric"><b>-80.21%</b><small>cycle time</small></div><div class="metric"><b>-64%</b><small>cost units</small></div><div class="metric"><b>-73.33%</b><small>quality defects</small></div><div class="metric"><b>-64.71%</b><small>human touches</small></div><div class="metric"><b>+55 pts</b><small>evidence completeness</small></div></div></section>
-<section><div class="eyebrow">Decision X-Ray</div><h2>Inspect the authorization boundary.</h2><p class="sub">Use the scenarios to see the distinction between capability and authority. The same agent can be technically capable of an action while governance returns a different disposition.</p><div class="demo"><div class="controls"><button onclick="showCase('read')">Low risk - read case</button><button onclick="showCase('high')">High risk - no human approval</button><button onclick="showCase('approved')">High risk - approval present</button><button onclick="showCase('bypass')">Attempt direct execution bypass</button><button onclick="showCase('confidence')">Insufficient confidence - fallback</button></div><pre id="trace"></pre></div></section>
-<section><div class="eyebrow">Evidence engineering</div><h2>The decision leaves a reconstructable trail.</h2><p class="sub">The reference engine records workflow, step, agent, action, tool, risk tier, action fingerprint, disposition, permit status, and the ordered control trace.</p><p><a href="evidence-sample.html">Open the sample evidence record -&gt;</a></p></section><div class="footer"><div>Juan A. Martinez Diaz, MBA - AI Governance - Agentic Systems - Workflow Intelligence</div><div><a href="https://github.com/Morbiaus/sentinel-governed-workflow-twin">View source on GitHub</a> - <a href="https://www.juanmartinez.ai">juanmartinez.ai</a></div></div></main>
-<script>const steps=[["S01","Receive exception request","ASSIST"],["S02","Validate request completeness","AGENT"],["S03","Retrieve customer profile","AGENT"],["S04","Retrieve account state","AGENT"],["S05","Check data provenance","AGENT"],["S06","Classify exception type","AGENT"],["S07","Apply policy retrieval","AGENT"],["S08","Identify missing evidence","AGENT"],["S09","Request additional evidence","ASSIST"],["S10","Assess exception risk","AGENT"],["S11","Generate recommended disposition","AGENT"],["S12","Independent control check","AGENT"],["S13","Human decision review","HUMAN"],["S14","Prepare customer communication","AGENT"],["S15","Approval before state change","HUMAN"],["S16","Commit approved account change","AGENT"],["S17","Write evidence and close case","AGENT"]];document.getElementById("baseline").innerHTML=steps.map(function(s){return '<div class="step human"><span class="n">'+s[0]+'</span><div>'+s[1]+'<br><small>HUMAN</small></div></div>'}).join("");document.getElementById("redesign").innerHTML=steps.map(function(s){var c=s[2]==="HUMAN"?"human":s[2]==="ASSIST"?"assist":"agent";return '<div class="step '+c+'"><span class="n">'+s[0]+'</span><div>'+s[1]+'<br><small>'+s[2]+'</small></div></div>'}).join("");
-const cases={read:"PROPOSED ACTION\nagent_id: workflow-agent-01\naction_class: READ_CASE\ntool: case_api\nrisk: LOW\nconfidence: 0.95\n\n[PASS] agent_registry\n[PASS] delegated_action\n[PASS] tool_permission\n[PASS] risk_ceiling\n[PASS] confidence >= 0.60\n[SKIP] human_approval\n\nDISPOSITION: ALLOW\nEXECUTION PERMIT: ISSUED",high:"PROPOSED ACTION\naction_class: COMMIT_ACCOUNT_CHANGE\ntool: account_change_api\nrisk: HIGH\nconfidence: 0.97\n\n[PASS] agent_registry\n[PASS] delegated_action\n[PASS] tool_permission\n[PASS] risk_ceiling\n[PASS] confidence >= 0.90\n[WAIT] human_approval required\n\nDISPOSITION: REQUIRE_APPROVAL\nEXECUTION PERMIT: NOT ISSUED",approved:"PROPOSED ACTION\naction_class: COMMIT_ACCOUNT_CHANGE\ntool: account_change_api\nrisk: HIGH\nconfidence: 0.97\nhuman_approved: true\n\n[PASS] agent_registry\n[PASS] delegated_action\n[PASS] tool_permission\n[PASS] risk_ceiling\n[PASS] confidence >= 0.90\n[PASS] human_approval\n\nDISPOSITION: ALLOW\nEXECUTION PERMIT: ISSUED\nPROTECTED EXECUTOR: ACTION MAY PROCEED",bypass:"DIRECT CALL TO PROTECTED EXECUTOR\nexecution_permit: null\n\n[FAIL] permit validation\n\nRESULT:\nPermissionError\nprotected execution denied: valid arbitration permit required\n\nSTATE CHANGE: NOT EXECUTED",confidence:"PROPOSED ACTION\naction_class: DRAFT_RECOMMENDATION\nrisk: MODERATE\nconfidence: 0.50\n\n[PASS] agent_registry\n[PASS] delegated_action\n[PASS] tool_permission\n[PASS] risk_ceiling\n[FAIL] confidence < 0.75\n[PASS] bounded_fallback\n\nDISPOSITION: FALLBACK\nEXECUTION PERMIT: NOT ISSUED"};function showCase(name){document.getElementById("trace").textContent=cases[name]}showCase("high");</script></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sentinel Decision X-Ray 2.0</title>
+<meta name="description" content="Interactive 3D public-safe demonstration of governed agentic workflow execution, decision authority, evidence, and measurable workflow redesign.">
+<link rel="stylesheet" href="xray2.css">
+</head>
+<body>
+<main class="shell">
+<div class="eyebrow">Sentinel — Public Reference Implementation</div>
+<h1>Capability is not authority.</h1>
+<p class="lede">Sentinel shows what happens between an AI agent being able to act and an enterprise deciding that it may act. Inspect the proposal, authorization gate, human authority, execution permit, protected action, and evidence trail in motion.</p>
+<div class="badges">
+<span class="badge">17 governance tests</span>
+<span class="badge">Synthetic data only</span>
+<span class="badge">Interactive 3D Decision X-Ray</span>
+<span class="badge">Protected execution permit</span>
+<span class="badge">Evidence ledger</span>
+</div>
+
+<section class="xray-shell" aria-label="Interactive Decision X-Ray 2.0">
+<div class="xray-canvas-wrap">
+<canvas id="xrayCanvas"></canvas>
+<div class="xray-vignette"></div><div class="xray-scan"></div>
+<div class="xray-stage-labels">
+<button class="stage-label" data-stage="0"><span class="num">01</span><b>Proposal</b><small>The agent proposes an action.</small></button>
+<button class="stage-label" data-stage="1"><span class="num">02</span><b>Authorization Gate</b><small>Identity, tool, risk, confidence, approval.</small></button>
+<button class="stage-label" data-stage="2"><span class="num">03</span><b>Human Authority</b><small>Accountable approval for consequential action.</small></button>
+<button class="stage-label" data-stage="3"><span class="num">04</span><b>Execution Permit</b><small>Authorization binds to the exact action.</small></button>
+<button class="stage-label" data-stage="4"><span class="num">05</span><b>Protected Execute</b><small>Direct bypass is rejected.</small></button>
+<button class="stage-label" data-stage="5"><span class="num">06</span><b>Evidence Ledger</b><small>Decision path and outcome are preserved.</small></button>
+</div>
+
+<div class="xray-state" id="xrayState" data-tone="amber">
+<div class="k">Live governance state</div>
+<div class="v" id="xrayStateValue">HIGH RISK ACTION</div>
+<div class="s" id="xrayStateSub">Waiting for accountable human authority.</div>
+</div>
+<div class="xray-titleplate"><strong>DECISION X-RAY 2.0</strong><span>Visible decisions. Verifiable authority.</span></div>
+</div>
+
+<div class="scenario-dock" aria-label="Governance scenarios">
+<button class="scenario-btn" data-scenario="read"><b>LOW RISK READ</b><small>Authorized without human approval</small></button>
+<button class="scenario-btn active" data-scenario="high"><b>HIGH RISK / NO APPROVAL</b><small>Stops at the authority boundary</small></button>
+<button class="scenario-btn" data-scenario="approved"><b>HIGH RISK / APPROVED</b><small>Permit issued for exact action</small></button>
+<button class="scenario-btn" data-scenario="bypass"><b>BYPASS ATTEMPT</b><small>Protected executor fails closed</small></button>
+<button class="scenario-btn" data-scenario="confidence"><b>LOW CONFIDENCE</b><small>Bounded fallback, no execution</small></button>
+</div>
+<div class="xray-inspector">
+<div class="inspector-card">
+<div class="disposition" id="disposition"><i></i>REQUIRE_APPROVAL</div>
+<h3>What Sentinel is deciding</h3>
+<p id="scenarioSummary">The agent may propose the state change, but capability does not supply authority. No execution permit exists until the required human approval is present.</p>
+</div>
+<div class="inspector-card">
+<h3>Decision trace</h3>
+<pre class="trace" id="trace"></pre>
+</div>
+</div>
+</section>
+
+<section class="content">
+<div class="eyebrow">Workflow intelligence</div>
+<h2>17 human steps become a governed human–agent workflow.</h2>
+<p class="sub">The example is fictional. Sentinel does not ask “where can we add AI?” first. It models the work, identifies where bounded automation is useful, and preserves human authority where the consequence justifies it.</p>
+<div class="legend">
+<span><i class="dot" style="background:var(--cyan)"></i>Agent</span>
+<span><i class="dot" style="background:var(--blue)"></i>AI assist</span>
+<span><i class="dot" style="background:var(--amber)"></i>Human authority</span>
+</div>
+<div class="compare">
+<div class="lane"><h3>Baseline</h3><p class="sub">17 human touches. Sequential processing. Partial decision evidence.</p><div class="steps" id="baseline"></div></div>
+<div class="lane"><h3>Governed redesign</h3><p class="sub">Agents perform bounded work. Humans retain consequential decision and execution authority.</p><div class="steps" id="redesign"></div></div>
+</div>
+</section>
+<section class="content">
+<div class="eyebrow">Illustrative measurement</div>
+<h2>Governance should prove whether the redesign helped.</h2>
+<p class="sub">These are synthetic design targets, not production or client claims. The purpose is to make workflow transformation measurable before AI scale is declared successful.</p>
+<div class="metrics">
+<div class="metric"><b>-80.21%</b><small>cycle time</small></div>
+<div class="metric"><b>-64%</b><small>cost units</small></div>
+<div class="metric"><b>-73.33%</b><small>quality defects</small></div>
+<div class="metric"><b>-64.71%</b><small>human touches</small></div>
+<div class="metric"><b>+55 pts</b><small>evidence completeness</small></div>
+</div>
+</section>
+
+<section class="content">
+<div class="eyebrow">Evidence engineering</div>
+<h2>The decision leaves a reconstructable trail.</h2>
+<p class="sub">The reference engine records workflow, step, agent, action, tool, risk tier, action fingerprint, disposition, permit status, and the ordered control trace.</p>
+<p><a href="evidence-sample.html">Open the sample evidence record →</a> &nbsp; <a href="https://github.com/Morbiaus/sentinel-governed-workflow-twin">Inspect the source →</a></p>
+</section>
+
+<div class="footer">
+<div>Juan A. Martinez Diaz, MBA · AI Governance · Agentic Systems · Workflow Intelligence</div>
+<div><a href="https://github.com/Morbiaus/sentinel-governed-workflow-twin">GitHub</a> · <a href="https://www.juanmartinez.ai">juanmartinez.ai</a></div>
+</div>
+</main>
+<noscript><p style="padding:24px;color:white">JavaScript is required for the interactive Decision X-Ray 2.0 scene.</p></noscript>
+<script type="module" src="xray2.js"></script>
+</body>
+</html>
