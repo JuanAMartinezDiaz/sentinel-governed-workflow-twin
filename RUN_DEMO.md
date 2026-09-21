@@ -6,7 +6,7 @@ A reviewer can inspect the core governance behavior in about three minutes.
 
 Open the live visual demo:
 
-**https://morbiaus.github.io/sentinel-governed-workflow-twin/**
+**https://juanamartinezdiaz.github.io/sentinel-governed-workflow-twin/**
 
 Try these cases:
 
@@ -19,7 +19,7 @@ Try these cases:
 ## Option 2 - Run the Python reference engine
 
 ~~~bash
-git clone https://github.com/Morbiaus/sentinel-governed-workflow-twin.git
+git clone https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin.git
 cd sentinel-governed-workflow-twin
 python3 -m venv .venv
 source .venv/bin/activate

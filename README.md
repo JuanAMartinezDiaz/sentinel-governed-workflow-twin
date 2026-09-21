@@ -2,21 +2,21 @@
 
 **A public reference implementation for governed agentic workflow execution.**
 
-[![CI](https://github.com/Morbiaus/sentinel-governed-workflow-twin/actions/workflows/ci.yml/badge.svg)](https://github.com/Morbiaus/sentinel-governed-workflow-twin/actions/workflows/ci.yml)
+[![CI](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/workflows/ci.yml/badge.svg)](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
 ![Reference Tests](https://img.shields.io/badge/governance%20tests-13-informational)
 ![Data](https://img.shields.io/badge/examples-synthetic-success)
 
 ## 3-minute executive review
 
-**[Open the live Sentinel governance demo](https://morbiaus.github.io/sentinel-governed-workflow-twin/)**
+**[Open the live Sentinel governance demo](https://juanamartinezdiaz.github.io/sentinel-governed-workflow-twin/)**
 
 ![Decision X-Ray 2.0](docs/assets/decision-xray2-live.png)
 
 A fast review path:
 
 1. **See the workflow transformation** — [baseline vs. governed redesign](docs/workflow-before-after.md)
-2. **Inspect the authorization boundary** — use the scenarios in the [live demo](https://morbiaus.github.io/sentinel-governed-workflow-twin/)
+2. **Inspect the authorization boundary** — use the scenarios in the [live demo](https://juanamartinezdiaz.github.io/sentinel-governed-workflow-twin/)
 3. **Inspect the decision evidence** — [sample evidence record](examples/evidence_record.example.json)
 4. **Run the reference engine** — [three-minute demo instructions](RUN_DEMO.md)
 5. **Inspect the tests** — [governance test suite](tests/)
@@ -84,7 +84,7 @@ The protected executor rejects direct execution unless the action carries a vali
 ## Quick start
 
 ```bash
-git clone https://github.com/Morbiaus/sentinel-governed-workflow-twin.git
+git clone https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin.git
 cd sentinel-governed-workflow-twin
 
 python -m venv .venv
