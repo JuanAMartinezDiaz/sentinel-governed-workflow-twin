@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import argparse
+
 from .arbitration import ArbitrationEngine
 from .authority import AuthorityRegistry
 from .evidence import EvidenceLedger
@@ -8,6 +10,9 @@ from .models import AgentAuthority, ProposedAction, RiskTier
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description="Demonstrate governed execution and export its evidence.")
+    parser.add_argument("--evidence-package", help="Write the synthetic decision and execution records as JSON")
+    args = parser.parse_args()
     registry = AuthorityRegistry()
     registry.register(
         AgentAuthority(
@@ -33,17 +38,17 @@ def main() -> None:
     gateway = ProtectedExecutor(ArbitrationEngine(registry))
     ledger = EvidenceLedger()
 
-    pending, permit = gateway.authorize(action)
-    ledger.record(action, pending, permit)
+    operation = lambda payload: {"status": "executed", **payload}
+    pending, _ = gateway.run_governed(action, operation, ledger)
     print(f"Without approval: {pending.disposition.value}")
 
-    approved, permit = gateway.authorize(action, human_approved=True)
-    event = ledger.record(action, approved, permit)
+    approved, outcome = gateway.run_governed(action, operation, ledger, human_approved=True)
     print(f"With approval: {approved.disposition.value}")
-    print(f"Evidence fingerprint: {event['action_fingerprint'][:16]}...")
-
-    outcome = gateway.execute(action, permit, lambda payload: {"status": "executed", **payload})
+    print(f"Evidence fingerprint: {action.fingerprint()[:16]}...")
     print(outcome)
+    if args.evidence_package:
+        ledger.export_package(args.evidence_package)
+        print(f"Evidence package: {args.evidence_package}")
 
 
 if __name__ == "__main__":
