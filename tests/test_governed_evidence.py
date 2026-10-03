@@ -7,6 +7,7 @@ import pytest
 
 from conftest import make_action
 from sentinel_ref.evidence import EvidenceLedger
+from sentinel_ref.gateway import EvidencePersistenceError
 from sentinel_ref.models import RiskTier
 
 
@@ -57,3 +58,44 @@ def test_evidence_write_failure_prevents_execution(gateway, tmp_path):
     with pytest.raises(OSError):
         gateway.run_governed(make_action(), lambda payload: called.append(payload), ledger)
     assert called == []
+
+
+def test_success_evidence_failure_preserves_completed_outcome(gateway):
+    class SuccessWriteFailureLedger(EvidenceLedger):
+        def record_execution(self, action, status, decision_id, **kwargs):
+            if status == 'SUCCEEDED':
+                raise OSError('evidence store unavailable')
+            return super().record_execution(action, status, decision_id, **kwargs)
+
+    called = []
+    outcome = {'receipt_id': 'receipt-1'}
+
+    with pytest.raises(EvidencePersistenceError) as captured:
+        gateway.run_governed(
+            make_action(),
+            lambda payload: called.append(payload) or outcome,
+            SuccessWriteFailureLedger(),
+        )
+
+    assert called == [{'case_id': 'SYN-1'}]
+    assert captured.value.outcome is outcome
+    assert captured.value.execution_status == 'SUCCEEDED'
+    assert captured.value.decision_id
+    assert 'do not retry' in str(captured.value)
+    assert isinstance(captured.value.__cause__, OSError)
+
+
+def test_execution_uses_original_authorized_fingerprint_when_payload_mutates(gateway):
+    ledger = EvidenceLedger()
+    action = make_action()
+    authorized_fingerprint = action.fingerprint()
+
+    def mutate_payload(payload):
+        payload['case_id'] = 'MUTATED-AFTER-AUTHORIZATION'
+
+    gateway.run_governed(action, mutate_payload, ledger)
+
+    decision, execution = ledger.events
+    assert action.fingerprint() != authorized_fingerprint
+    assert decision['action_fingerprint'] == authorized_fingerprint
+    assert execution['action_fingerprint'] == authorized_fingerprint

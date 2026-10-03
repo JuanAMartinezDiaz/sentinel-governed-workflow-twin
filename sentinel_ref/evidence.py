@@ -51,7 +51,14 @@ class EvidenceLedger:
                 handle.write(json.dumps(event, sort_keys=True) + "\n")
         return event
 
-    def record_execution(self, action: ProposedAction, status: str, decision_id: str) -> dict[str, Any]:
+    def record_execution(
+        self,
+        action: ProposedAction,
+        status: str,
+        decision_id: str,
+        *,
+        action_fingerprint: str | None = None,
+    ) -> dict[str, Any]:
         """Record observed execution status without retaining sensitive outputs."""
         if status not in {"SUCCEEDED", "FAILED", "BLOCKED"}:
             raise ValueError("unknown execution status")
@@ -61,7 +68,9 @@ class EvidenceLedger:
             "recorded_at": datetime.now(timezone.utc).isoformat(),
             "workflow_id": action.workflow_id,
             "step_id": action.step_id,
-            "action_fingerprint": action.fingerprint(),
+            "action_fingerprint": (
+                action.fingerprint() if action_fingerprint is None else action_fingerprint
+            ),
             "execution_status": status,
         }
         self.events.append(event)
