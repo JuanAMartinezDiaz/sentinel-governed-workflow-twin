@@ -1,12 +1,28 @@
 from __future__ import annotations
 
 import hmac
+import json
 from hashlib import sha256
 import secrets
+from dataclasses import asdict
 from typing import Any, Callable
 
 from .arbitration import ArbitrationEngine
+from .evidence import EvidenceLedger
 from .models import ArbitrationResult, Disposition, ExecutionPermit, ProposedAction
+
+
+class EvidencePersistenceError(RuntimeError):
+    """Evidence persistence failed after a protected operation completed."""
+
+    def __init__(self, outcome: Any, decision_id: str) -> None:
+        super().__init__(
+            "protected operation succeeded, but SUCCEEDED evidence could not be persisted; "
+            "do not retry the operation"
+        )
+        self.outcome = outcome
+        self.decision_id = decision_id
+        self.execution_status = "SUCCEEDED"
 
 
 class ProtectedExecutor:
@@ -53,3 +69,66 @@ class ProtectedExecutor:
         if not self._permit_is_valid(action, permit):
             raise PermissionError("protected execution denied: valid arbitration permit required")
         return operation(action.payload)
+
+    def run_governed(
+        self,
+        action: ProposedAction,
+        operation: Callable[[dict[str, Any]], Any],
+        ledger: EvidenceLedger,
+        *,
+        human_approved: bool = False,
+    ) -> tuple[ArbitrationResult, Any]:
+        """Capture policy/authority context and actual protected execution outcome."""
+        result, permit = self.authorize(action, human_approved=human_approved)
+        authority = self._engine.registry.get(action.agent_id)
+        policy = self._engine.policy
+        policy_snapshot = asdict(policy)
+        policy_snapshot["human_approval_at_or_above"] = policy.human_approval_at_or_above.name
+        decision = ledger.record(action, result, permit, context={
+            "policy_snapshot": policy_snapshot,
+            "policy_fingerprint": sha256(json.dumps(
+                policy_snapshot, sort_keys=True, separators=(",", ":")
+            ).encode()).hexdigest(),
+            "authority_snapshot": None if authority is None else {
+                "agent_id": authority.agent_id,
+                "allowed_actions": sorted(authority.allowed_actions),
+                "allowed_tools": sorted(authority.allowed_tools),
+                "max_risk_tier": authority.max_risk_tier.name,
+            },
+            "human_approved": human_approved,
+            "approval_evidence_type": "caller_assertion",
+            "required_confidence": policy.threshold(action.risk_tier),
+        })
+        action_fingerprint = (
+            decision["action_fingerprint"]
+            if permit is None
+            else permit.action_fingerprint
+        )
+        if permit is None:
+            ledger.record_execution(
+                action,
+                "BLOCKED",
+                decision["decision_id"],
+                action_fingerprint=action_fingerprint,
+            )
+            return result, None
+        try:
+            outcome = self.execute(action, permit, operation)
+        except Exception:
+            ledger.record_execution(
+                action,
+                "FAILED",
+                decision["decision_id"],
+                action_fingerprint=action_fingerprint,
+            )
+            raise
+        try:
+            ledger.record_execution(
+                action,
+                "SUCCEEDED",
+                decision["decision_id"],
+                action_fingerprint=action_fingerprint,
+            )
+        except Exception as error:
+            raise EvidencePersistenceError(outcome, decision["decision_id"]) from error
+        return result, outcome

@@ -192,3 +192,15 @@ AI Governance • Agentic Systems • Workflow Intelligence • Operational Risk
 ## License
 
 MIT License. See [LICENSE](LICENSE).
+
+## Review an execution evidence package
+
+```bash
+python -m sentinel_ref.cli --evidence-package /tmp/sentinel-evidence.json
+```
+
+The synthetic demo now preserves effective policy and delegated authority,
+correlates each decision with observed execution, and exports an inspectable JSON
+package. See [the evidence model](docs/evidence-model.md) for the control mapping
+and the production limitations. An authorization record is distinct from proof
+that a tool executed successfully.
