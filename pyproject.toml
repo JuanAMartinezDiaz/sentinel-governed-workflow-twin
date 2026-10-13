@@ -13,7 +13,7 @@ dependencies = []
 dev = ["pytest>=8.0", "jsonschema>=4.21"]
 
 [tool.setuptools.packages.find]
-include = ["sentinel_ref*"]
+include = ["sentinel_ref*", "api*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
