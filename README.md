@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/workflows/ci.yml/badge.svg)](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
-![Reference Tests](https://img.shields.io/badge/governance%20tests-13-informational)
+![Reference Tests](https://img.shields.io/badge/governance%20tests-34-informational)
 ![Data](https://img.shields.io/badge/examples-synthetic-success)
 
 ## 3-minute executive review
@@ -103,7 +103,7 @@ The Decision X-Ray can call the same Python reference engine through two small H
 - `GET /api/health` reports the service mode and available fixed scenarios.
 - `POST /api/demo` accepts exactly `{"scenario":"..."}` and returns the real engine decision trace and request-scoped evidence events.
 
-The supported scenarios are `low-risk-read`, `high-risk-pending`, `high-risk-approved-demo`, `direct-executor-bypass`, and `low-confidence-draft`. They use only fixed synthetic values. The API rejects arbitrary workflow payloads; the “approved” case is labeled as simulated and does not represent a real person's approval. Evidence is returned in the response and is not persisted across requests.
+The supported scenarios are `low-risk-read`, `high-risk-pending`, `high-risk-approved-demo`, `direct-executor-bypass`, `low-confidence-draft`, and `unapproved-tool`. They use only fixed synthetic values. The API rejects arbitrary workflow payloads; the “approved” case is labeled as simulated and does not represent a real person's approval. Evidence is returned in the response and is not persisted across requests.
 
 To serve the existing visual demo and API together on Vercel, connect this repository with its root directory set to the repository root. `vercel.json` serves the `docs/` site and keeps the Python routes under `/api`. The public GitHub Pages demo remains useful as a visual reference but has no Python runtime, so its status indicator will explain when the engine API is unavailable. No API keys or secrets are required for these synthetic scenarios.
 
