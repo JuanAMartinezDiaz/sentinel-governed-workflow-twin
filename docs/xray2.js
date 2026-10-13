@@ -184,7 +184,45 @@ function applyScenario(name){
  trail.material.color.setHex(tone);
 }
 
-scenarioButtons.forEach(b=>b.addEventListener("click",()=>applyScenario(b.dataset.scenario)));
+const apiScenarioNames={
+ read:"low-risk-read",
+ high:"high-risk-pending",
+ approved:"high-risk-approved-demo",
+ bypass:"direct-executor-bypass",
+ confidence:"low-confidence-draft"
+};
+
+async function runEngineScenario(name){
+ const apiStatus=document.getElementById("apiStatus");
+ apiStatus.textContent="Running the fixed synthetic scenario through the reference engine…";
+ try{
+  const response=await fetch("/api/demo",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({scenario:apiScenarioNames[name]})
+  });
+  if(!response.ok)throw new Error("Engine API returned "+response.status);
+  const result=await response.json();
+  if(result.mode!=="synthetic-demo")throw new Error("Unexpected engine response");
+  disposition.textContent=result.decision;
+  summary.textContent=scenarios[name].summary+(result.approval_note?" "+result.approval_note:"");
+  const evidenceId=result.evidence?.[0]?.decision_id??"unavailable";
+  const executionStatus=result.evidence?.[1]?.execution_status??"not recorded";
+  traceEl.textContent="ENGINE DECISION: "+result.decision+" — "+result.reason+"\n\n"+
+   result.trace.map(step=>"["+step.status+"] "+step.check+" — "+step.detail).join("\n")+
+   "\n\nEVIDENCE DECISION ID: "+evidenceId+
+   "\nEXECUTION EVIDENCE: "+executionStatus;
+  apiStatus.textContent="Reference engine connected · synthetic scenario only · no customer data submitted";
+ }catch(error){
+  apiStatus.textContent="Engine API unavailable · showing the illustrative reference trace";
+ }
+}
+
+scenarioButtons.forEach(b=>b.addEventListener("click",()=>{
+ applyScenario(b.dataset.scenario);
+ runEngineScenario(b.dataset.scenario);
+}));
+runEngineScenario(activeScenario);
 stageLabels.forEach((b,i)=>{
  b.addEventListener("mouseenter",()=>hoverStage=i);
  b.addEventListener("mouseleave",()=>hoverStage=-1);

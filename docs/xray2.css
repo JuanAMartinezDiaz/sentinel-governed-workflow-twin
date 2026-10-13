@@ -56,6 +56,7 @@ h1{font-size:clamp(48px,7.3vw,104px);line-height:.9;letter-spacing:-.058em;margi
 .inspector-card p{margin:0;color:#8da8b7;font-size:12px;line-height:1.55}
 .disposition{display:inline-flex;align-items:center;gap:7px;margin-bottom:10px;padding:6px 9px;border-radius:999px;border:1px solid #33566b;font-size:10px;font-weight:800;letter-spacing:.08em}
 .disposition i{width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 12px currentColor}
+.api-status{margin:0 0 14px!important;color:#8de3bf!important;font-size:10px!important;letter-spacing:.02em}
 .trace{margin:0;white-space:pre-wrap;word-break:break-word;color:#cbe3ed;font:11px/1.55 ui-monospace,SFMono-Regular,Menlo,monospace;max-height:220px;overflow:auto}
 section.content{margin-top:62px}
 section.content h2{font-size:clamp(30px,3.6vw,52px);letter-spacing:-.035em;margin:10px 0}

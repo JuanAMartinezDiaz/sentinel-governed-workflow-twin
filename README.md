@@ -96,6 +96,19 @@ pytest -q
 python -m sentinel_ref.cli
 ```
 
+## Synthetic demo API
+
+The Decision X-Ray can call the same Python reference engine through two small HTTP routes:
+
+- `GET /api/health` reports the service mode and available fixed scenarios.
+- `POST /api/demo` accepts exactly `{"scenario":"..."}` and returns the real engine decision trace and request-scoped evidence events.
+
+The supported scenarios are `low-risk-read`, `high-risk-pending`, `high-risk-approved-demo`, `direct-executor-bypass`, and `low-confidence-draft`. They use only fixed synthetic values. The API rejects arbitrary workflow payloads; the “approved” case is labeled as simulated and does not represent a real person's approval. Evidence is returned in the response and is not persisted across requests.
+
+To serve the existing visual demo and API together on Vercel, connect this repository with its root directory set to the repository root. `vercel.json` serves the `docs/` site and keeps the Python routes under `/api`. The public GitHub Pages demo remains useful as a visual reference but has no Python runtime, so its status indicator will explain when the engine API is unavailable. No API keys or secrets are required for these synthetic scenarios.
+
+This is a demonstrator, not the production Sentinel backend: it has no user accounts, tenant isolation, customer-data ingestion, durable evidence storage, model integration, live business tools, or deployment-specific abuse controls. Do not send customer, account, or other confidential information to it.
+
 ## Repository map
 
 ```text
