@@ -43,7 +43,7 @@ h1{font-size:clamp(48px,7.3vw,104px);line-height:.9;letter-spacing:-.058em;margi
 .xray-state[data-tone="green"] .v{color:var(--green)}
 .xray-state[data-tone="red"] .v{color:var(--red)}
 .xray-state[data-tone="cyan"] .v{color:var(--cyan)}
-.scenario-dock{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:12px;border-top:1px solid #1c394c;background:rgba(4,13,20,.92)}
+.scenario-dock{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:12px;border-top:1px solid #1c394c;background:rgba(4,13,20,.92)}
 .scenario-btn{appearance:none;border:1px solid #27465b;background:#0a1823;color:#cfe1ea;border-radius:13px;padding:12px 11px;text-align:left;cursor:pointer;transition:.22s ease}
 .scenario-btn:hover{border-color:#4a8aac;transform:translateY(-1px)}
 .scenario-btn.active{border-color:var(--cyan);background:linear-gradient(180deg,#0d2735,#0a1b27);box-shadow:0 0 20px rgba(89,220,255,.08)}

@@ -1,4 +1,6 @@
 import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js";
+import {scenarios} from "./scenarios.mjs";
+import {createScenarioRunner} from "./demo-client.mjs";
 
 const canvas=document.getElementById("xrayCanvas");
 const scene=new THREE.Scene();
@@ -129,23 +131,6 @@ const trail=new THREE.Points(trailGeo,new THREE.PointsMaterial({color:color.cyan
 scene.add(trail);
 const trailHistory=Array.from({length:trailCount},()=>new THREE.Vector3(-6.1,-.18,0));
 
-const scenarios={
- read:{title:"LOW RISK READ",tone:"cyan",disp:"ALLOW",sub:"Read-only action. Human approval is not required.",stop:"pass",
- summary:"The agent is registered, READ_CASE is delegated, case_api is approved, the action is within the risk ceiling, and confidence clears the LOW threshold.",
- trace:"PROPOSED ACTION\nREAD_CASE / case_api / LOW / confidence 0.95\n\n[PASS] agent_registry\n[PASS] delegated_action\n[PASS] tool_permission\n[PASS] risk_ceiling\n[PASS] confidence >= 0.60\n[SKIP] human_approval\n\nDISPOSITION: ALLOW\nEXECUTION PERMIT: ISSUED"},
- high:{title:"HIGH RISK ACTION",tone:"amber",disp:"REQUIRE_APPROVAL",sub:"The action reaches the gate and waits for accountable human authority.",stop:"gate",
- summary:"The agent may propose the state change, but capability does not supply authority. No execution permit exists until the required human approval is present.",
- trace:"PROPOSED ACTION\nCOMMIT_ACCOUNT_CHANGE / HIGH / confidence 0.97\n\n[PASS] agent_registry\n[PASS] delegated_action\n[PASS] tool_permission\n[PASS] risk_ceiling\n[PASS] confidence >= 0.90\n[WAIT] human_approval required\n\nDISPOSITION: REQUIRE_APPROVAL\nEXECUTION PERMIT: NOT ISSUED"},
- approved:{title:"APPROVED ACTION",tone:"green",disp:"ALLOW",sub:"Human authority is present. A permit is issued for this exact action.",stop:"pass",
- summary:"After approval, Sentinel binds authorization to the action fingerprint, issues a signed execution permit, and allows the protected executor to proceed.",
- trace:"PROPOSED ACTION\nCOMMIT_ACCOUNT_CHANGE / HIGH / confidence 0.97\nhuman_approved: true\n\n[PASS] agent_registry\n[PASS] delegated_action\n[PASS] tool_permission\n[PASS] risk_ceiling\n[PASS] confidence >= 0.90\n[PASS] human_approval\n\nDISPOSITION: ALLOW\nEXECUTION PERMIT: ISSUED\nPROTECTED EXECUTOR: ACTION MAY PROCEED"},
- bypass:{title:"BYPASS ATTEMPT",tone:"red",disp:"BLOCKED",sub:"A direct executor call cannot manufacture authority.",stop:"bypass",
- summary:"The attempted action appears at the protected executor without a valid permit. The boundary fails closed and the state change is not executed.",
- trace:"DIRECT CALL TO PROTECTED EXECUTOR\nexecution_permit: null\n\n[FAIL] permit validation\n[FAIL] authorization boundary\n\nRESULT: PermissionError\nSTATE CHANGE: NOT EXECUTED"},
- confidence:{title:"CONFIDENCE BELOW FLOOR",tone:"amber",disp:"FALLBACK",sub:"Governance chooses a bounded non-execution path.",stop:"fallback",
- summary:"The proposed action is otherwise delegated, but confidence is below the MODERATE threshold. Sentinel does not improvise; it selects the declared safe fallback.",
- trace:"PROPOSED ACTION\nDRAFT_RECOMMENDATION / MODERATE / confidence 0.50\n\n[PASS] agent_registry\n[PASS] delegated_action\n[PASS] tool_permission\n[PASS] risk_ceiling\n[FAIL] confidence < 0.75\n[PASS] bounded_fallback\n\nDISPOSITION: FALLBACK\nEXECUTION PERMIT: NOT ISSUED"}
-};
 
 let activeScenario="high";
 let scenarioStarted=performance.now();
@@ -184,45 +169,33 @@ function applyScenario(name){
  trail.material.color.setHex(tone);
 }
 
-const apiScenarioNames={
- read:"low-risk-read",
- high:"high-risk-pending",
- approved:"high-risk-approved-demo",
- bypass:"direct-executor-bypass",
- confidence:"low-confidence-draft"
-};
-
-async function runEngineScenario(name){
- const apiStatus=document.getElementById("apiStatus");
- apiStatus.textContent="Running the fixed synthetic scenario through the reference engine…";
- try{
-  const response=await fetch("/api/demo",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({scenario:apiScenarioNames[name]})
-  });
-  if(!response.ok)throw new Error("Engine API returned "+response.status);
-  const result=await response.json();
-  if(result.mode!=="synthetic-demo")throw new Error("Unexpected engine response");
+const apiStatus=document.getElementById("apiStatus");
+const runEngineScenario=createScenarioRunner({
+ scenarios,
+ onPending(){
+  apiStatus.textContent="Running the fixed synthetic scenario through the reference engine…";
+ },
+ onResult(name,result){
   disposition.textContent=result.decision;
-  summary.textContent=scenarios[name].summary+(result.approval_note?" "+result.approval_note:"");
-  const evidenceId=result.evidence?.[0]?.decision_id??"unavailable";
-  const executionStatus=result.evidence?.[1]?.execution_status??"not recorded";
+  summary.textContent=scenarios[name].summary;
+  const evidenceId=result.evidence[0].decision_id;
+  const executionStatus=result.evidence[1].execution_status;
   traceEl.textContent="ENGINE DECISION: "+result.decision+" — "+result.reason+"\n\n"+
    result.trace.map(step=>"["+step.status+"] "+step.check+" — "+step.detail).join("\n")+
    "\n\nEVIDENCE DECISION ID: "+evidenceId+
-   "\nEXECUTION EVIDENCE: "+executionStatus;
-  apiStatus.textContent="Reference engine connected · synthetic scenario only · no customer data submitted";
- }catch(error){
-  apiStatus.textContent="Engine API unavailable · showing the illustrative reference trace";
+   "\nGOVERNED EXECUTION EVIDENCE: "+executionStatus;
+  apiStatus.textContent="Reference engine connected · fixed synthetic inputs · request-scoped evidence";
+ },
+ onUnavailable(){
+  apiStatus.textContent="Engine API unavailable or response invalid · showing the illustrative reference trace";
  }
-}
+});
 
 scenarioButtons.forEach(b=>b.addEventListener("click",()=>{
  applyScenario(b.dataset.scenario);
  runEngineScenario(b.dataset.scenario);
 }));
-runEngineScenario(activeScenario);
+
 stageLabels.forEach((b,i)=>{
  b.addEventListener("mouseenter",()=>hoverStage=i);
  b.addEventListener("mouseleave",()=>hoverStage=-1);
@@ -318,5 +291,6 @@ document.getElementById("redesign").innerHTML=workflowSteps.map(s=>{
 }).join("");
 
 applyScenario("high");
+runEngineScenario("high");
 window.__sentinelXRay2Ready=true;
 document.documentElement.dataset.xray2Ready="true";

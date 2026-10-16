@@ -4,7 +4,6 @@
 
 [![CI](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/workflows/ci.yml/badge.svg)](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
-![Reference Tests](https://img.shields.io/badge/governance%20tests-34-informational)
 ![Data](https://img.shields.io/badge/examples-synthetic-success)
 
 ## 3-minute executive review
@@ -77,7 +76,7 @@ The protected executor rejects direct execution unless the action carries a vali
 - **Evidence Ledger** — structured decision trace including action fingerprint, disposition, checks, and permit status.
 - **Outcome Metrics** — baseline-to-redesign comparison for cycle time, cost units, defects, human touches, and evidence completeness.
 - **Synthetic 17-step financial-services workflow** — a reproducible enterprise-style example containing low-, moderate-, and high-risk steps.
-- **18 reference governance tests** — including direct-execution rejection and permit-tampering tests.
+- **Reference governance regression tests** — including direct-execution rejection and permit-tampering tests.
 - **Continuous Integration** — GitHub Actions runs the test suite on every push and pull request.
 - **Threat model** — documented misuse cases, trust boundaries, mitigations, and deliberate limitations.
 
@@ -103,11 +102,32 @@ The Decision X-Ray can call the same Python reference engine through two small H
 - `GET /api/health` reports the service mode and available fixed scenarios.
 - `POST /api/demo` accepts exactly `{"scenario":"..."}` and returns the real engine decision trace and request-scoped evidence events.
 
-The supported scenarios are `low-risk-read`, `high-risk-pending`, `high-risk-approved-demo`, `direct-executor-bypass`, `low-confidence-draft`, and `unapproved-tool`. They use only fixed synthetic values. The API rejects arbitrary workflow payloads; the “approved” case is labeled as simulated and does not represent a real person's approval. Evidence is returned in the response and is not persisted across requests.
+<!-- BEGIN SYNTHETIC SCENARIOS -->
+The API supports **6 fixed synthetic scenarios**, all **6 available in Decision X-Ray**. No scenarios are API-only.
+
+| API scenario | Visual selection | Decision | Simulated execution |
+|---|---|---|---|
+| `low-risk-read` | LOW RISK READ | `ALLOW` | `SUCCEEDED` |
+| `high-risk-pending` | HIGH RISK / NO APPROVAL | `REQUIRE_APPROVAL` | `BLOCKED` |
+| `high-risk-approved-demo` | HIGH RISK / SIMULATED APPROVAL | `ALLOW` | `SUCCEEDED` |
+| `direct-executor-bypass` | BYPASS ATTEMPT | `BLOCKED` | `BLOCKED` |
+| `low-confidence-draft` | LOW CONFIDENCE | `FALLBACK` | `BLOCKED` |
+| `unapproved-tool` | UNAPPROVED TOOL | `DENY` | `BLOCKED` |
+<!-- END SYNTHETIC SCENARIOS -->
 
 To serve the existing visual demo and API together on Vercel, connect this repository with its root directory set to the repository root. `vercel.json` serves the `docs/` site and keeps the Python routes under `/api`. The public GitHub Pages demo remains useful as a visual reference but has no Python runtime, so its status indicator will explain when the engine API is unavailable. No API keys or secrets are required for these synthetic scenarios.
 
 This is a demonstrator, not the production Sentinel backend: it has no user accounts, tenant isolation, customer-data ingestion, durable evidence storage, model integration, live business tools, or deployment-specific abuse controls. Do not send customer, account, or other confidential information to it.
+
+The API rejects arbitrary workflow/customer payloads. Approval is simulated, and all operations use fixed synthetic values. Evidence is returned only in the response, not persisted across requests. Decisions, traces and execution outcomes are deterministic; evidence IDs and timestamps are request-specific. For the bypass scenario, the ledger records the governed approval-required request; the subsequent direct-call rejection is shown in the response trace.
+
+These reference scenarios do **not** implement or satisfy [issue #5](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/issues/5), which specifies separate acceptance fixtures for proprietary workflow ingestion. No proprietary implementation or customer data is included here.
+
+### Keeping the scenario contract in sync
+
+`api/scenarios.py` is the authoritative catalog of fixed inputs and display metadata. After changing it or the engine, run `python -m scripts.sync_demo_scenarios` to regenerate the browser's illustrative traces, HTML choices, README table and demo instructions. Then run `python -m scripts.sync_demo_scenarios --check`, `python -m pytest -q`, and `node --test tests/test_demo_client.mjs` (Node 22+). Fixed expected outcomes in the regression suite remain independent of generated outputs.
+
+When updating a PR with the synthetic API scenario summary, copy the exact output of `python -m scripts.sync_demo_scenarios --pr-summary` into its description. CI validates that marked block on PR updates and description edits. Current test totals belong in dated verification evidence, not static marketing badges.
 
 ## Repository map
 

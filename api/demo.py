@@ -10,6 +10,7 @@ from http.server import BaseHTTPRequestHandler
 import json
 from typing import Any
 
+from api.scenarios import SCENARIOS
 from sentinel_ref.arbitration import ArbitrationEngine
 from sentinel_ref.authority import AuthorityRegistry
 from sentinel_ref.evidence import EvidenceLedger
@@ -20,52 +21,6 @@ from sentinel_ref.models import AgentAuthority, ProposedAction, RiskTier
 MAX_BODY_BYTES = 2_048
 ALLOWED_ORIGINS = {
     "https://martinez-applied-intelligence.morbiaus.chatgpt.site",
-}
-
-SCENARIOS: dict[str, dict[str, Any]] = {
-    "low-risk-read": {
-        "action_class": "READ_CASE",
-        "tool_name": "case_api",
-        "risk_tier": RiskTier.LOW,
-        "confidence": 0.95,
-        "human_approved": False,
-    },
-    "high-risk-pending": {
-        "action_class": "COMMIT_ACCOUNT_CHANGE",
-        "tool_name": "account_change_api",
-        "risk_tier": RiskTier.HIGH,
-        "confidence": 0.97,
-        "human_approved": False,
-    },
-    "direct-executor-bypass": {
-        "action_class": "COMMIT_ACCOUNT_CHANGE",
-        "tool_name": "account_change_api",
-        "risk_tier": RiskTier.HIGH,
-        "confidence": 0.97,
-        "human_approved": False,
-        "attempt_direct_bypass": True,
-    },
-    "high-risk-approved-demo": {
-        "action_class": "COMMIT_ACCOUNT_CHANGE",
-        "tool_name": "account_change_api",
-        "risk_tier": RiskTier.HIGH,
-        "confidence": 0.97,
-        "human_approved": True,
-    },
-    "low-confidence-draft": {
-        "action_class": "DRAFT_RECOMMENDATION",
-        "tool_name": "recommendation_service",
-        "risk_tier": RiskTier.MODERATE,
-        "confidence": 0.65,
-        "human_approved": False,
-    },
-    "unapproved-tool": {
-        "action_class": "READ_CASE",
-        "tool_name": "unapproved_external_tool",
-        "risk_tier": RiskTier.LOW,
-        "confidence": 0.95,
-        "human_approved": False,
-    },
 }
 
 
@@ -131,6 +86,8 @@ def run_scenario(scenario_name: str) -> dict[str, Any]:
                     "detail": "direct execution was blocked; no business action ran",
                 }
             )
+        else:
+            raise RuntimeError("synthetic bypass unexpectedly executed")
     return {
         "mode": "synthetic-demo",
         "scenario": scenario_name,

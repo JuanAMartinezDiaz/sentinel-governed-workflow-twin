@@ -7,7 +7,6 @@ def test_decision_xray_2_entrypoint_is_wired():
     assert 'id="xrayCanvas"' in html
     assert 'src="xray2.js"' in html
     assert 'href="xray2.css"' in html
-    assert html.count('data-scenario=') == 5
     assert 'DECISION X-RAY 2.0' in html
 
 
