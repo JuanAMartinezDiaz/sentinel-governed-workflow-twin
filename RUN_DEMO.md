@@ -8,13 +8,20 @@ Open the live visual demo:
 
 **https://juanamartinezdiaz.github.io/sentinel-governed-workflow-twin/**
 
-Try these cases:
+<!-- BEGIN SYNTHETIC SCENARIOS -->
+The API supports **6 fixed synthetic scenarios**, all **6 available in Decision X-Ray**. No scenarios are API-only.
 
-1. Low-risk read -> **ALLOW**
-2. High-risk state change without approval -> **REQUIRE_APPROVAL**
-3. Same state change with approval -> **ALLOW**
-4. Direct protected-executor call without permit -> **BLOCKED**
-5. Moderate-risk action below confidence threshold -> **FALLBACK**
+| API scenario | Visual selection | Decision | Simulated execution |
+|---|---|---|---|
+| `low-risk-read` | LOW RISK READ | `ALLOW` | `SUCCEEDED` |
+| `high-risk-pending` | HIGH RISK / NO APPROVAL | `REQUIRE_APPROVAL` | `BLOCKED` |
+| `high-risk-approved-demo` | HIGH RISK / SIMULATED APPROVAL | `ALLOW` | `SUCCEEDED` |
+| `direct-executor-bypass` | BYPASS ATTEMPT | `BLOCKED` | `BLOCKED` |
+| `low-confidence-draft` | LOW CONFIDENCE | `FALLBACK` | `BLOCKED` |
+| `unapproved-tool` | UNAPPROVED TOOL | `DENY` | `BLOCKED` |
+<!-- END SYNTHETIC SCENARIOS -->
+
+GitHub Pages displays generated illustrative traces. It has no Python runtime. A connected API is identified explicitly by the status indicator. All approval is simulated.
 
 ## Option 2 - Run the Python reference engine
 
@@ -29,7 +36,7 @@ pytest -q
 python -m sentinel_ref.cli
 ~~~
 
-Expected: **16 passed**, then the demo returns REQUIRE_APPROVAL without human approval and ALLOW with approval.
+Expected: the complete test suite passes, then the demo returns REQUIRE_APPROVAL without human approval and ALLOW with approval.
 
 The reference is intentionally small enough to inspect. It proves that action generation alone does not authorize execution, direct protected execution fails closed, insufficient confidence selects fallback, and every governance decision emits evidence.
 
