@@ -70,3 +70,9 @@ Release decision:
 The README explicitly identifies this repository as a synthetic public reference implementation, not the proprietary product.
 The README badge reports 13 reference tests while implementation text reports 18. Neither count is a fresh execution result; resolve reporting against the actual suite and CI before citing counts.
 Public reference success must not close proprietary acceptance work.
+
+## Documentation reconciliation October 22 2026
+
+The latest completed reference CI inspected during this review was [run 39463516644](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/runs/39463516644), revision `3dd6a9dbc397b6e83991f9a7f8c1204364243215`, dated October 20, 2026. Its test-job log reports **24 passed**. The README, profile and reference landing page now cite that dated result instead of the inconsistent 13/18 counts. Later revisions require their own CI evidence; this documentation reconciliation does not approve a proprietary release.
+
+The profile now links a [public project portfolio](https://github.com/JuanAMartinezDiaz/JuanAMartinezDiaz/blob/main/PROJECTS.md) with the existing acceptance issues. The browser visualization and static authorization sample are explicitly separated from the Python engine's observed-execution evidence. Native GitHub Projects board setup remains outside this documentation change.
