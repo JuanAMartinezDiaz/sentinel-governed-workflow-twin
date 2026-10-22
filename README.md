@@ -4,7 +4,7 @@
 
 [![CI](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/workflows/ci.yml/badge.svg)](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
-![Reference Tests](https://img.shields.io/badge/governance%20tests-13-informational)
+[![Reference tests](https://img.shields.io/badge/reference%20tests-24%20passed%202026--10--20-informational)](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/runs/39463516644)
 ![Data](https://img.shields.io/badge/examples-synthetic-success)
 
 ## 3-minute executive review
@@ -29,6 +29,12 @@ Sentinel Governed Workflow Twin demonstrates a specific proposition:
 This repository shows how an enterprise workflow can be represented as a digital twin, redesigned with agentic AI, and executed through explicit authority checks that produce structured evidence.
 
 It is a **public-safe reference implementation**, not the proprietary Sentinel product codebase. All examples are synthetic.
+
+## Current project status
+
+Developed by **Juan A. Martinez Diaz, founder of Bounded Agentic Intelligence (BAI)**. This public reference is separate from the proprietary Sentinel product. The browser visualization illustrates control paths; the Python reference engine provides executable tests and evidence export. Synthetic benchmark figures are illustrative design inputs, not measured customer savings.
+
+**[Project portfolio](https://github.com/JuanAMartinezDiaz/JuanAMartinezDiaz/blob/main/PROJECTS.md)** · **[Development and release gates](docs/release-readiness-framework.md)** · **[Open acceptance work](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/issues)**
 
 ## Why this exists
 
@@ -77,7 +83,7 @@ The protected executor rejects direct execution unless the action carries a vali
 - **Evidence Ledger** — structured decision trace including action fingerprint, disposition, checks, and permit status.
 - **Outcome Metrics** — baseline-to-redesign comparison for cycle time, cost units, defects, human touches, and evidence completeness.
 - **Synthetic 17-step financial-services workflow** — a reproducible enterprise-style example containing low-, moderate-, and high-risk steps.
-- **18 reference governance tests** — including direct-execution rejection and permit-tampering tests.
+- **24 reference tests passed in CI on October 20, 2026** at revision `3dd6a9dbc397b6e83991f9a7f8c1204364243215` — including governance, permit validation, schemas, metrics, and execution-evidence coverage. [Inspect the exact run](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/runs/39463516644).
 - **Continuous Integration** — GitHub Actions runs the test suite on every push and pull request.
 - **Threat model** — documented misuse cases, trust boundaries, mitigations, and deliberate limitations.
 
