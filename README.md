@@ -121,7 +121,7 @@ The API supports **6 fixed synthetic scenarios**, all **6 available in Decision 
 | `unapproved-tool` | UNAPPROVED TOOL | `DENY` | `BLOCKED` |
 <!-- END SYNTHETIC SCENARIOS -->
 
-To serve the existing visual demo and API together on Vercel, connect this repository with its root directory set to the repository root. `vercel.json` serves the `docs/` site and keeps the Python routes under `/api`. The public GitHub Pages demo remains useful as a visual reference but has no Python runtime, so its status indicator will explain when the engine API is unavailable. No API keys or secrets are required for these synthetic scenarios.
+To serve the existing visual demo and API together on Vercel, connect this repository with its root directory set to the repository root and Framework Preset set to **Other**. `vercel.json` explicitly disables single-app Python auto-detection, serves the `docs/` site and keeps the Python routes under `/api`. The public GitHub Pages demo remains useful as a visual reference but has no Python runtime, so its status indicator will explain when the engine API is unavailable. No API keys or secrets are required for these synthetic scenarios.
 
 This is a demonstrator, not the production Sentinel backend: it has no user accounts, tenant isolation, customer-data ingestion, durable evidence storage, model integration, live business tools, or deployment-specific abuse controls. Do not send customer, account, or other confidential information to it.
 

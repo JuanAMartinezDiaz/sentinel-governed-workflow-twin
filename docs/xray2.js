@@ -227,7 +227,12 @@ function packetPosition(now){
 function resize(){
  const box=canvas.parentElement.getBoundingClientRect();
  const w=Math.max(1,box.width),h=Math.max(1,box.height);
- renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();
+ renderer.setSize(w,h,false);camera.aspect=w/h;
+ // Keep all six stages visible on narrow screens, with the same fog depth.
+ camera.position.z=Math.max(13.7,7.1/(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*camera.aspect));
+ camera.far=Math.max(80,camera.position.z+30);
+ scene.fog.density=.055*13.7/camera.position.z;
+ camera.updateProjectionMatrix();
 }
 window.addEventListener("resize",resize);resize();
 
