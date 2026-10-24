@@ -19,3 +19,6 @@ include = ["sentinel_ref*", "api*"]
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-ra"
+
+[tool.vercel]
+entrypoint = "api.demo:handler"
