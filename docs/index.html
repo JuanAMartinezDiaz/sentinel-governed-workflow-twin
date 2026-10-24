@@ -13,7 +13,7 @@
 <h1>Capability is not authority.</h1>
 <p class="lede">Sentinel shows what happens between an AI agent being able to act and an enterprise deciding that it may act. Inspect the proposal, authorization gate, human authority, execution permit, protected action, and evidence trail in motion.</p>
 <div class="badges">
-<a class="badge" href="https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/runs/39463516644">24 reference tests passed · Oct 20, 2026</a>
+<a class="badge" href="https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/actions/workflows/ci.yml">View CI test results</a>
 <span class="badge">Synthetic data only</span>
 <span class="badge">Interactive 3D Decision X-Ray</span>
 <span class="badge">Protected execution permit</span>
@@ -35,7 +35,7 @@
 </div>
 
 <div class="xray-state" id="xrayState" data-tone="amber">
-<div class="k">Live governance state</div>
+<div class="k">Synthetic governance demonstration</div>
 <div class="v" id="xrayStateValue">HIGH RISK ACTION</div>
 <div class="s" id="xrayStateSub">Waiting for accountable human authority.</div>
 </div>
@@ -43,15 +43,19 @@
 </div>
 
 <div class="scenario-dock" aria-label="Governance scenarios">
-<button class="scenario-btn" data-scenario="read"><b>LOW RISK READ</b><small>Authorized without human approval</small></button>
-<button class="scenario-btn active" data-scenario="high"><b>HIGH RISK / NO APPROVAL</b><small>Stops at the authority boundary</small></button>
-<button class="scenario-btn" data-scenario="approved"><b>HIGH RISK / APPROVED</b><small>Permit issued for exact action</small></button>
-<button class="scenario-btn" data-scenario="bypass"><b>BYPASS ATTEMPT</b><small>Protected executor fails closed</small></button>
-<button class="scenario-btn" data-scenario="confidence"><b>LOW CONFIDENCE</b><small>Bounded fallback, no execution</small></button>
+<!-- BEGIN GENERATED SCENARIO BUTTONS -->
+<button class="scenario-btn" data-scenario="read"><b>LOW RISK READ</b><small>Read-only action. Human approval is not required.</small></button>
+<button class="scenario-btn active" data-scenario="high"><b>HIGH RISK / NO APPROVAL</b><small>Stops at the authority boundary.</small></button>
+<button class="scenario-btn" data-scenario="approved"><b>HIGH RISK / SIMULATED APPROVAL</b><small>Fixed simulation; no person approved an action.</small></button>
+<button class="scenario-btn" data-scenario="bypass"><b>BYPASS ATTEMPT</b><small>Protected executor rejects a missing permit.</small></button>
+<button class="scenario-btn" data-scenario="confidence"><b>LOW CONFIDENCE</b><small>Bounded fallback, no execution.</small></button>
+<button class="scenario-btn" data-scenario="tool"><b>UNAPPROVED TOOL</b><small>Tool permission denied, no execution.</small></button>
+<!-- END GENERATED SCENARIO BUTTONS -->
 </div>
 <div class="xray-inspector">
 <div class="inspector-card">
 <div class="disposition" id="disposition"><i></i>REQUIRE_APPROVAL</div>
+<p class="api-status" id="apiStatus" role="status" aria-live="polite">Checking the reference engine connection…</p>
 <h3>What Sentinel is deciding</h3>
 <p id="scenarioSummary">The agent may propose the state change, but capability does not supply authority. No execution permit exists until the required human approval is present.</p>
 </div>
