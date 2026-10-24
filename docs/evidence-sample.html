@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sentinel Evidence Sample</title><style>body{margin:0;background:#071019;color:#eef5f7;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.wrap{max-width:980px;margin:auto;padding:38px 20px}h1{font-family:Inter,system-ui,sans-serif;font-size:38px;letter-spacing:-.03em}p{font-family:Inter,system-ui,sans-serif;color:#a5b8c3;line-height:1.6}pre{padding:22px;border:1px solid #294153;border-radius:18px;background:#0b1620;white-space:pre-wrap;overflow:auto;line-height:1.55}.ok{color:#7bd88f}a{color:#65d6e8}</style></head>
-<body><main class="wrap"><p><a href="./">&lt;- Back to Sentinel demo</a></p><h1>Decision evidence sample</h1><p>This synthetic record illustrates what an independent reviewer can reconstruct after a governed high-risk action is approved.</p><pre>{
+<body><main class="wrap"><p><a href="./">&lt;- Back to Sentinel demo</a></p><h1>Decision evidence sample</h1><p>This illustrative authorization record shows the declared checks and permit decision for a synthetic high-risk action. It does not prove that the operation executed or that a human approver was authenticated. For policy snapshots and correlated observed execution, use the Python evidence-package export.</p><pre>{
   "recorded_at": "2026-09-21T10:31:00Z",
   "workflow_id": "synthetic-bank-001",
   "step_id": "S16",
@@ -21,4 +21,4 @@
     {"check":"human_approval","status":"PASS","detail":"required human approval is present"},
     {"check":"disposition","status":"PASS","detail":"all declared checks passed"}
   ]
-}</pre><p class="ok">Disposition: ALLOW - Execution permit issued - Evidence trace complete</p></main></body></html>
+}</pre><p class="ok">Disposition: ALLOW - Execution permit issued - Execution outcome not shown</p><p><a href="https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/blob/main/docs/evidence-model.md">Inspect the current execution evidence model and limitations</a>.</p></main></body></html>

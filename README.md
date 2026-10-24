@@ -29,6 +29,12 @@ This repository shows how an enterprise workflow can be represented as a digital
 
 It is a **public-safe reference implementation**, not the proprietary Sentinel product codebase. All examples are synthetic.
 
+## Current project status
+
+Developed by **Juan A. Martinez Diaz, founder of Bounded Agentic Intelligence (BAI)**. This public reference is separate from the proprietary Sentinel product. The browser visualization illustrates control paths; the Python reference engine provides executable tests and evidence export. Synthetic benchmark figures are illustrative design inputs, not measured customer savings.
+
+**[Project portfolio](https://github.com/JuanAMartinezDiaz/JuanAMartinezDiaz/blob/main/PROJECTS.md)** · **[Development and release gates](docs/release-readiness-framework.md)** · **[Open acceptance work](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/issues)**
+
 ## Why this exists
 
 Many AI demonstrations stop at model capability: the model can classify, recommend, generate, plan, or call a tool.
