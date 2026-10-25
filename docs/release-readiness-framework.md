@@ -44,6 +44,7 @@ Requirements must be tested for the actual deployment.
 | R05 | Verify demo integrity and claims | 5,8 | Pending current verification | Correct destination, access, synthetic labels and evidence-backed copy |
 | R06 | Establish production operations | 6–9 | Not established by reference repository | Applicable operational/security gates accepted |
 | R07 | Optional governance maturity assessment | 1–6 | Issue #6 explicitly planned, not implemented/verified | Keep outside default demo and critical release path unless scope decision changes |
+| R08 | Quota exhaustion, runaway loops and governed continuity | 2,5–7 | [Pre-pilot acceptance specification](pre-pilot-resource-resilience.md) prepared; execution unverified | QR-01–QR-08 pass on target deployment with durable evidence, named-human handoff and reviewer decision |
 
 Issues: [#3](../../issues/3), [#4](../../issues/4), [#5](../../issues/5), [#6](../../issues/6).
 Use repository issue URLs when resolving relative links outside GitHub's file viewer.
