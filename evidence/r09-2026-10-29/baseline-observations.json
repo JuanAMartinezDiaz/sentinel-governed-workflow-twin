@@ -1,0 +1,11 @@
+{
+  "base_revision": "b66ba2c6fa0e39e16f57e3e1e0102d610f6653b5",
+  "scope": "synthetic public reference only",
+  "reused_permit_effect_count": 2,
+  "post_authority_removal_effect_count": 1,
+  "expected_safe_counts": {
+    "reused_permit_effect_count": 1,
+    "post_authority_removal_effect_count": 0
+  },
+  "corrective_hypothesis": "Bind a unique, finite-lived permit to current policy and authority context; consume atomically before dispatch; invalidate on authority changes."
+}

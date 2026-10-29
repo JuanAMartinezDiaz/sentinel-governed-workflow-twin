@@ -28,7 +28,21 @@ class ArbitrationEngine:
 
     def __init__(self, registry: AuthorityRegistry, policy: ArbitrationPolicy | None = None) -> None:
         self.registry = registry
+        self._policy_revision = 0
         self.policy = policy or ArbitrationPolicy()
+
+    @property
+    def policy(self) -> ArbitrationPolicy:
+        return self._policy
+
+    @policy.setter
+    def policy(self, value: ArbitrationPolicy) -> None:
+        self._policy = value
+        self._policy_revision += 1
+
+    @property
+    def policy_revision(self) -> int:
+        return self._policy_revision
 
     def evaluate(self, action: ProposedAction, *, human_approved: bool = False) -> ArbitrationResult:
         trace: list[TraceEntry] = []

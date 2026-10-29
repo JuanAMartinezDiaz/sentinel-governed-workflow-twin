@@ -44,6 +44,9 @@ Requirements must be tested for the actual deployment.
 | R05 | Verify demo integrity and claims | 5,8 | Pending current verification | Correct destination, access, synthetic labels and evidence-backed copy |
 | R06 | Establish production operations | 6–9 | Not established by reference repository | Applicable operational/security gates accepted |
 | R07 | Optional governance maturity assessment | 1–6 | Issue #6 explicitly planned, not implemented/verified | Keep outside default demo and critical release path unless scope decision changes |
+| R09 | Fabricated compliance evidence, bypass and requalification | 3–6 | [Reference tests and reproduced limitations](verification-r09-2026-10-29.md); actual candidate NOT RUN; BLOCKED | [FE-01–FE-08](pre-pilot-evidence-integrity.md) executed on the actual candidate, missing controls implemented, independent reviewer acceptance |
+
+R08 remains separately tracked in [draft PR #7](https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin/pull/7); R09 does not close or supersede it.
 
 Issues: [#3](../../issues/3), [#4](../../issues/4), [#5](../../issues/5), [#6](../../issues/6).
 Use repository issue URLs when resolving relative links outside GitHub's file viewer.
