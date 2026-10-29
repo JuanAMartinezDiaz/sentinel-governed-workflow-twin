@@ -1,0 +1,263 @@
+{
+  "checkout_revision": "6dd39226d31d2323d15fe2993d9209e9846fd7f4",
+  "created_at_utc": "2026-10-29T22:31:09.116576+00:00",
+  "not_tested": [
+    "authenticated human approval and requalification",
+    "OS/network/database credential isolation",
+    "production key lifecycle and signed evidence verification",
+    "durable evidence integrity and restart reconciliation",
+    "cross-worker business idempotency",
+    "live-agent behavior under pressure",
+    "atomic authorization changes across processes and in-flight cancellation"
+  ],
+  "observations": [
+    {
+      "description": "Authorized synthetic action and correlated execution evidence",
+      "expected": {
+        "correlated": true,
+        "effects": 1,
+        "execution": "SUCCEEDED"
+      },
+      "id": "C01",
+      "note": "",
+      "observed": {
+        "correlated": true,
+        "effects": 1,
+        "execution": "SUCCEEDED"
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Fabricated permit cannot grant execution",
+      "expected": {
+        "blocked": true,
+        "effects": 0
+      },
+      "id": "C02",
+      "note": "",
+      "observed": {
+        "blocked": true,
+        "effects": 0
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Fabricated certification in payload is not approval",
+      "expected": {
+        "disposition": "REQUIRE_APPROVAL",
+        "effects": 0
+      },
+      "id": "C03",
+      "note": "",
+      "observed": {
+        "disposition": "REQUIRE_APPROVAL",
+        "effects": 0
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Consumed permit replay is blocked",
+      "expected": {
+        "effects": 1,
+        "replay_blocked": true
+      },
+      "id": "C04",
+      "note": "",
+      "observed": {
+        "effects": 1,
+        "replay_blocked": true
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Cross-workflow permit transfer is blocked",
+      "expected": {
+        "blocked": true,
+        "effects": 0
+      },
+      "id": "C05",
+      "note": "",
+      "observed": {
+        "blocked": true,
+        "effects": 0
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Expired unused permit is blocked",
+      "expected": {
+        "blocked": true,
+        "effects": 0
+      },
+      "id": "C06",
+      "note": "",
+      "observed": {
+        "blocked": true,
+        "effects": 0
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Outstanding permit cannot survive authority reduction",
+      "expected": {
+        "blocked": true,
+        "effects": 0
+      },
+      "id": "C07",
+      "note": "",
+      "observed": {
+        "blocked": true,
+        "effects": 0
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Regrant requires a fresh permit; old permit stays invalid",
+      "expected": {
+        "fresh_effects": 1,
+        "old_blocked": true
+      },
+      "id": "C08",
+      "note": "Administrative restoration is simulated; no real reviewer or requalification was tested.",
+      "observed": {
+        "fresh_effects": 1,
+        "old_blocked": true
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Policy change and restoration cannot resurrect old permit",
+      "expected": {
+        "blocked": true,
+        "effects": 0
+      },
+      "id": "C09",
+      "note": "",
+      "observed": {
+        "blocked": true,
+        "effects": 0
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "A replacement executor rejects prior instance permits",
+      "expected": {
+        "blocked": true,
+        "effects": 0
+      },
+      "id": "C10",
+      "note": "In-memory instance test only; not production key rotation, key revocation, or historical receipt verification.",
+      "observed": {
+        "blocked": true,
+        "effects": 0
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Pre-dispatch evidence-write failure prevents governed action",
+      "expected": {
+        "audit_failed": true,
+        "effects": 0
+      },
+      "id": "C11",
+      "note": "",
+      "observed": {
+        "audit_failed": true,
+        "effects": 0
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Post-effect audit failure is distinguished from no execution",
+      "expected": {
+        "effects": 1,
+        "reported_outcome": "SUCCEEDED"
+      },
+      "id": "C12",
+      "note": "This is an exception contract, not durable reconciliation or automatic safe retry.",
+      "observed": {
+        "effects": 1,
+        "reported_outcome": "SUCCEEDED"
+      },
+      "result": "CONTROL_CHECK_PASSED"
+    },
+    {
+      "description": "Unauthenticated caller approval can authorize a high-risk action",
+      "expected": {
+        "approval_type": "caller_assertion",
+        "effects": 1
+      },
+      "id": "L01",
+      "note": "",
+      "observed": {
+        "approval_type": "caller_assertion",
+        "effects": 1
+      },
+      "result": "LIMITATION_REPRODUCED"
+    },
+    {
+      "description": "Writable evidence export can claim a success that never occurred",
+      "expected": {
+        "claimed_success": true,
+        "observed_effects": 0
+      },
+      "id": "L02",
+      "note": "",
+      "observed": {
+        "claimed_success": true,
+        "observed_effects": 0
+      },
+      "result": "LIMITATION_REPRODUCED"
+    },
+    {
+      "description": "Direct temporary SQLite write is not mediated by Python gateway",
+      "expected": {
+        "gateway_events": 0,
+        "rows_written": 1
+      },
+      "id": "L03",
+      "note": "Isolated local synthetic database only; no production bypass or access was attempted.",
+      "observed": {
+        "gateway_events": 0,
+        "rows_written": 1
+      },
+      "result": "LIMITATION_REPRODUCED"
+    },
+    {
+      "description": "Fresh authorizations can repeat the same business effect",
+      "expected": {
+        "distinct_permits": true,
+        "effects": 2
+      },
+      "id": "L04",
+      "note": "One-use permits do not implement durable business-level idempotency.",
+      "observed": {
+        "distinct_permits": true,
+        "effects": 2
+      },
+      "result": "LIMITATION_REPRODUCED"
+    }
+  ],
+  "runtime": {
+    "implementation": "CPython",
+    "python": "3.12.3"
+  },
+  "schema_version": "1.0",
+  "scope": "synthetic public reference only; no live model, real human approval, or production resource",
+  "source_sha256": {
+    "scripts/run_r09_evidence.py": "4b4d5b2c2cac0e6a5eea33df269fd8f04ea69aac094c64caeeb4e234309375d6",
+    "sentinel_ref/arbitration.py": "c9fd642cf0114ebf5ea6274e81df34db09404699b1bc12475e8a4db670b81bd5",
+    "sentinel_ref/authority.py": "0d6e9974dd39bd0f3ecc806aacea024a9538b1665cc0644511e3117da32913e3",
+    "sentinel_ref/gateway.py": "8a72502d0090d2d1385b99d3e56c57942df63c5b5e064635cd1cde48cbc08cc4",
+    "tests/test_r09_limitations.py": "2cbadc5b5d9dcca883ed170e9ad4a3b0732103d345dfb01e586f19ba8d99ad2c",
+    "tests/test_r09_permits.py": "97e8bdbd1530f384acc20dc27d26770ac02c2952b01ef6932e165a8c68048e39"
+  },
+  "summary": {
+    "control_checks_passed": 12,
+    "independent_reviewer": "UNASSIGNED",
+    "limitations_reproduced": 4,
+    "proprietary_deployment": "NOT_RUN",
+    "r09_acceptance": "BLOCKED"
+  },
+  "working_tree_dirty": false
+}
