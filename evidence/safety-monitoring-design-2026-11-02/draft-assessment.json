@@ -1,0 +1,92 @@
+{
+  "workflow_sha256": "3c83068bebba6c62b1af031bdcd2d1138b2cfde4349b97fcf32f638a66019f0a",
+  "specification_sha256": "45116e7af665f93242131b8ed1f3695735fed8dddc25df016fd162d3a4e723c5",
+  "specification_status": "INCOMPLETE",
+  "operational_acceptance": "UNVERIFIED",
+  "release_decision": "BLOCKED",
+  "release_blockers": [
+    "TRUSTED_RUNTIME_VERIFICATION_NOT_CONNECTED"
+  ],
+  "coverage": {
+    "SMG-01": {
+      "name": "Policy violations",
+      "declared_status_counts": {
+        "specified": 5
+      }
+    },
+    "SMG-02": {
+      "name": "Unauthorized actions",
+      "declared_status_counts": {
+        "specified": 5
+      }
+    },
+    "SMG-03": {
+      "name": "Human oversight failures",
+      "declared_status_counts": {
+        "specified": 5
+      }
+    },
+    "SMG-04": {
+      "name": "Behavioral drift",
+      "declared_status_counts": {
+        "specified": 5
+      }
+    },
+    "SMG-05": {
+      "name": "Multi-agent system risks",
+      "declared_status_counts": {
+        "specified": 5
+      }
+    },
+    "SMG-06": {
+      "name": "Auditability",
+      "declared_status_counts": {
+        "specified": 5
+      }
+    }
+  },
+  "runtime_tests": [
+    {
+      "id": "SM-01",
+      "name": "Policy violations",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "SM-02",
+      "name": "Unauthorized actions",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "SM-03",
+      "name": "Human oversight failures",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "SM-04",
+      "name": "Behavioral drift",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "SM-05",
+      "name": "Multi-agent system risks",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "SM-06",
+      "name": "Auditability",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "SM-07",
+      "name": "Monitoring outage or unavailable evaluator",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "SM-08",
+      "name": "Authorized action completes once and is reconstructable",
+      "status": "NOT_RUN"
+    }
+  ],
+  "unresolved_design_issue_count": 125,
+  "note": "Generated draft: owner/integration fields are deliberately unresolved. No operating tests executed."
+}

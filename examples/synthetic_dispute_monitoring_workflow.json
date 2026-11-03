@@ -1,0 +1,52 @@
+{
+  "workflow_id": "synthetic-dispute-monitoring-001",
+  "title": "Synthetic dispute review and simulated $100 refund",
+  "disclaimer": "Fictional public-safe design fixture. The $100 amount is illustrative, not a production authorization threshold. No live tools or customer data.",
+  "steps": [
+    {
+      "id": "D01",
+      "name": "Read assigned synthetic dispute",
+      "baseline_mode": "HUMAN",
+      "proposed_mode": "AGENT",
+      "action_class": "READ_CASE",
+      "risk_tier": "LOW",
+      "human_approval": false
+    },
+    {
+      "id": "D02",
+      "name": "Extract and reconcile source facts",
+      "baseline_mode": "HUMAN",
+      "proposed_mode": "AGENT",
+      "action_class": "VALIDATE_INPUT",
+      "risk_tier": "MODERATE",
+      "human_approval": false
+    },
+    {
+      "id": "D03",
+      "name": "Draft evidence-backed recommendation",
+      "baseline_mode": "HUMAN",
+      "proposed_mode": "ASSIST",
+      "action_class": "DRAFT_RECOMMENDATION",
+      "risk_tier": "MODERATE",
+      "human_approval": false
+    },
+    {
+      "id": "D04",
+      "name": "Review exact action and evidence",
+      "baseline_mode": "HUMAN",
+      "proposed_mode": "HUMAN",
+      "action_class": "APPROVE_EXECUTION",
+      "risk_tier": "HIGH",
+      "human_approval": true
+    },
+    {
+      "id": "D05",
+      "name": "Request simulated $100 refund and reconcile receipt",
+      "baseline_mode": "HUMAN",
+      "proposed_mode": "AGENT",
+      "action_class": "COMMIT_ACCOUNT_CHANGE",
+      "risk_tier": "HIGH",
+      "human_approval": true
+    }
+  ]
+}
