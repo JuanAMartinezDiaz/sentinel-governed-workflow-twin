@@ -166,9 +166,9 @@ must be identified and verified before operational integration or pilot claims.
 | 3: Delegation and drift | Shared budgets, descendant cancellation, memory/configuration events and matched-case baselines. | SM-04/05 plus matching resilience tests, including bounded cancellation evidence. |
 | 4: Buyer validation | Operator walkthrough and an independent controlled design-partner assessment. | Measured review effort, false alarms, missed faults, reconstruction effort and net benefit after monitoring/review costs. |
 
-Do not retrain or promote checkpoint 0142 as part of this work. Its reported
-extraction failures can become independently documented SM-01 fixtures after the
-source/expected-value diagnosis is available; their current status is not inferred.
+Separately diagnosed extraction defects can become synthetic SM-01 fixtures
+after source and expected-value analysis. This authoring increment does not
+change models or authorize training or promotion.
 
 ## Commercial validation
 

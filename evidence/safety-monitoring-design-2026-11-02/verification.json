@@ -1,0 +1,51 @@
+{
+  "scope": "Synthetic monitoring design validation only",
+  "observed_at_utc": "2026-11-03T00:57:09.704142+00:00",
+  "implementation_commit": "fcf3d9d9aaa1a3b75df8b6cb8c60ff30ace9c8ab",
+  "tested_git_tree": "a7c816d037d2515c3fe8c9b29bbf6b903bb42918",
+  "base_commit": "b66ba2c6fa0e39e16f57e3e1e0102d610f6653b5",
+  "python": "3.12.14",
+  "node": "v24.22.1",
+  "pytest": "9.2.0",
+  "jsonschema": "4.26.0",
+  "results": {
+    "focused_design_tests": {
+      "passed": 45,
+      "failed": 0
+    },
+    "full_python_suite": {
+      "passed": 120,
+      "failed": 0
+    },
+    "browser_tests": {
+      "passed": 18,
+      "failed": 0
+    },
+    "scenario_contract": "PASS",
+    "browser_syntax": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "test_count_note": "The 45 focused cases are included in the 120 Python cases; they are not additional trials.",
+  "operational_acceptance": "UNVERIFIED",
+  "release_decision": "BLOCKED",
+  "runtime_tests": {
+    "SM-01": "NOT_RUN",
+    "SM-02": "NOT_RUN",
+    "SM-03": "NOT_RUN",
+    "SM-04": "NOT_RUN",
+    "SM-05": "NOT_RUN",
+    "SM-06": "NOT_RUN",
+    "SM-07": "NOT_RUN",
+    "SM-08": "NOT_RUN"
+  },
+  "provenance": "Implementer-generated local results, not an independent assurance opinion. Local staged tree matched the remote implementation tree.",
+  "file_sha256": {
+    "README.md": "03194b52772659195991f887a451cf99ae119820f9ec8397684e978577af765c",
+    "docs/safety-monitoring.md": "a2c3432f9aec717fb406f6fdd3237d86d46a26da2f422b555b1ea8d38296b00f",
+    "examples/synthetic_dispute_monitoring_specification.json": "888ced3d6614d9d586dd59d9647ab3187a478d29ee54c7dab31c311b1bfbb75c",
+    "examples/synthetic_dispute_monitoring_workflow.json": "b27b2099a27c6186cdd502d696df703181ba64c4d50fc55124740fd6cbb18a53",
+    "schemas/safety-monitoring.schema.json": "6478d5611adcbe73785f5db50f0dae78a447af6369da46cd4bb7971d1108473f",
+    "scripts/safety_monitoring.py": "25bddd566d6dc73f8a5ea615b564ebc8e8c21529580920cbc08d181030fead11",
+    "tests/test_safety_monitoring.py": "0d2d9ecf5041968da79e6840a1f78ad72232188f6642ed4cb8d240185dfcfc5a"
+  }
+}
