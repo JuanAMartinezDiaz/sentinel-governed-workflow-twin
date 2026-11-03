@@ -1,0 +1,775 @@
+{
+  "schema_version": "1.0",
+  "specification_version": "draft-1",
+  "workflow_id": "synthetic-dispute-monitoring-001",
+  "workflow_version": "synthetic-dispute-v1",
+  "workflow_sha256": "3c83068bebba6c62b1af031bdcd2d1138b2cfde4349b97fcf32f638a66019f0a",
+  "scope": "synthetic_design_review",
+  "steps": [
+    {
+      "step_id": "D01",
+      "owner_ref": null,
+      "agent_identity_ref": null,
+      "policy_version_ref": null,
+      "source_requirements_ref": null,
+      "allowed_tools": [],
+      "data_scope_ref": null,
+      "reviewer_role_ref": null,
+      "requirements_confirmation_ref": null,
+      "response_owner_ref": null,
+      "backup_owner_ref": null,
+      "response_deadline_seconds": null,
+      "recovery_ref": null,
+      "retention_access_ref": null,
+      "controls": [
+        {
+          "goal_id": "SMG-01",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "source.fact_extracted",
+            "source.contradiction",
+            "policy.evaluated"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-01",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-02",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "identity.validated",
+            "authority.changed",
+            "tool.dispatch_requested",
+            "authority.revoked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-02",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-03",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "review.requested",
+            "review.acknowledged",
+            "review.decided",
+            "review.expired"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-03",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-04",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "configuration.changed",
+            "memory.changed",
+            "baseline.compared"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-04",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-05",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "delegation.created",
+            "delegation.scope_checked",
+            "delegation.cancelled"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-05",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-06",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "audit.persisted",
+            "tool.receipt",
+            "business_state.reconciled",
+            "audit.integrity_checked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-06",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        }
+      ]
+    },
+    {
+      "step_id": "D02",
+      "owner_ref": null,
+      "agent_identity_ref": null,
+      "policy_version_ref": null,
+      "source_requirements_ref": null,
+      "allowed_tools": [],
+      "data_scope_ref": null,
+      "reviewer_role_ref": null,
+      "requirements_confirmation_ref": null,
+      "response_owner_ref": null,
+      "backup_owner_ref": null,
+      "response_deadline_seconds": null,
+      "recovery_ref": null,
+      "retention_access_ref": null,
+      "controls": [
+        {
+          "goal_id": "SMG-01",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "source.fact_extracted",
+            "source.contradiction",
+            "policy.evaluated"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-01",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-02",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "identity.validated",
+            "authority.changed",
+            "tool.dispatch_requested",
+            "authority.revoked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-02",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-03",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "review.requested",
+            "review.acknowledged",
+            "review.decided",
+            "review.expired"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-03",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-04",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "configuration.changed",
+            "memory.changed",
+            "baseline.compared"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-04",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-05",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "delegation.created",
+            "delegation.scope_checked",
+            "delegation.cancelled"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-05",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-06",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "audit.persisted",
+            "tool.receipt",
+            "business_state.reconciled",
+            "audit.integrity_checked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-06",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        }
+      ]
+    },
+    {
+      "step_id": "D03",
+      "owner_ref": null,
+      "agent_identity_ref": null,
+      "policy_version_ref": null,
+      "source_requirements_ref": null,
+      "allowed_tools": [],
+      "data_scope_ref": null,
+      "reviewer_role_ref": null,
+      "requirements_confirmation_ref": null,
+      "response_owner_ref": null,
+      "backup_owner_ref": null,
+      "response_deadline_seconds": null,
+      "recovery_ref": null,
+      "retention_access_ref": null,
+      "controls": [
+        {
+          "goal_id": "SMG-01",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "source.fact_extracted",
+            "source.contradiction",
+            "policy.evaluated"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-01",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-02",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "identity.validated",
+            "authority.changed",
+            "tool.dispatch_requested",
+            "authority.revoked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-02",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-03",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "review.requested",
+            "review.acknowledged",
+            "review.decided",
+            "review.expired"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-03",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-04",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "configuration.changed",
+            "memory.changed",
+            "baseline.compared"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-04",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-05",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "delegation.created",
+            "delegation.scope_checked",
+            "delegation.cancelled"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-05",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-06",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "audit.persisted",
+            "tool.receipt",
+            "business_state.reconciled",
+            "audit.integrity_checked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-06",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        }
+      ]
+    },
+    {
+      "step_id": "D04",
+      "owner_ref": null,
+      "agent_identity_ref": null,
+      "policy_version_ref": null,
+      "source_requirements_ref": null,
+      "allowed_tools": [],
+      "data_scope_ref": null,
+      "reviewer_role_ref": null,
+      "requirements_confirmation_ref": null,
+      "response_owner_ref": null,
+      "backup_owner_ref": null,
+      "response_deadline_seconds": null,
+      "recovery_ref": null,
+      "retention_access_ref": null,
+      "controls": [
+        {
+          "goal_id": "SMG-01",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "source.fact_extracted",
+            "source.contradiction",
+            "policy.evaluated"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-01",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-02",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "identity.validated",
+            "authority.changed",
+            "tool.dispatch_requested",
+            "authority.revoked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-02",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-03",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "review.requested",
+            "review.acknowledged",
+            "review.decided",
+            "review.expired"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-03",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-04",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "configuration.changed",
+            "memory.changed",
+            "baseline.compared"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-04",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-05",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "delegation.created",
+            "delegation.scope_checked",
+            "delegation.cancelled"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-05",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-06",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "audit.persisted",
+            "tool.receipt",
+            "business_state.reconciled",
+            "audit.integrity_checked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-06",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        }
+      ]
+    },
+    {
+      "step_id": "D05",
+      "owner_ref": null,
+      "agent_identity_ref": null,
+      "policy_version_ref": null,
+      "source_requirements_ref": null,
+      "allowed_tools": [],
+      "data_scope_ref": null,
+      "reviewer_role_ref": null,
+      "requirements_confirmation_ref": null,
+      "response_owner_ref": null,
+      "backup_owner_ref": null,
+      "response_deadline_seconds": null,
+      "recovery_ref": null,
+      "retention_access_ref": null,
+      "controls": [
+        {
+          "goal_id": "SMG-01",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "source.fact_extracted",
+            "source.contradiction",
+            "policy.evaluated"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-01",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-02",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "identity.validated",
+            "authority.changed",
+            "tool.dispatch_requested",
+            "authority.revoked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-02",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-03",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "review.requested",
+            "review.acknowledged",
+            "review.decided",
+            "review.expired"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-03",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-04",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "configuration.changed",
+            "memory.changed",
+            "baseline.compared"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-04",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-05",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "delegation.created",
+            "delegation.scope_checked",
+            "delegation.cancelled"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-05",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        },
+        {
+          "goal_id": "SMG-06",
+          "mandatory": true,
+          "status": "specified",
+          "required_events": [
+            "audit.persisted",
+            "tool.receipt",
+            "business_state.reconciled",
+            "audit.integrity_checked"
+          ],
+          "event_producer_ref": null,
+          "detection_rule_ref": null,
+          "response": "BLOCK_OR_PAUSE",
+          "test_ids": [
+            "SM-06",
+            "SM-07",
+            "SM-08"
+          ],
+          "evidence_refs": [],
+          "verification": null,
+          "not_applicable_justification": null,
+          "disabled_capability_evidence_ref": null
+        }
+      ]
+    }
+  ]
+}
