@@ -6,6 +6,10 @@
 ![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
 ![Data](https://img.shields.io/badge/examples-synthetic-success)
 
+## Case study and governance evidence
+
+[Read the case study](docs/case-study.md) for my contribution, design decisions, and limitations. The [NIST AI RMF crosswalk](docs/framework-alignment.md) connects selected outcomes to controls, tests, and remaining gaps. [Dated verification](docs/verification-2026-11-09.md) identifies the reviewed revision and results.
+
 ## 3-minute executive review
 
 **[Open the live Sentinel governance demo](https://juanamartinezdiaz.github.io/sentinel-governed-workflow-twin/)**

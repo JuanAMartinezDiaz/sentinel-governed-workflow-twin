@@ -1,33 +1,25 @@
-# Framework alignment notes
+# Framework alignment and test evidence
 
-These notes are implementation-oriented and are **not compliance claims**.
+Reviewed November 9, 2026 against **NIST AI RMF 1.0, January 2023 (NIST AI 100-1)**. This is the author's selective interpretation of how the public reference contributes evidence relevant to framework outcomes. It is not a certification, a compliance claim, or a complete assessment. The AI RMF is voluntary and does not prescribe Sentinel's architecture or these particular tests.
 
-## NIST AI Risk Management Framework
+The outcome descriptions below are paraphrases. Page references use the printed page followed by the PDF page in parentheses; links open the original NIST publication at the cited PDF page. The contribution and gap columns describe this reference implementation, not NIST requirements for a particular technical mechanism.
 
-The reference architecture supports concerns associated with GOVERN, MAP, MEASURE, and MANAGE by making authority, risk classification, approval, evidence, and measurable outcomes explicit.
+| NIST outcome and source | Contribution in this reference | Inspectable evidence | What remains outside this evidence |
+| --- | --- | --- | --- |
+| **GOVERN 3.2** — differentiate human and AI responsibilities and oversight through policies and procedures. Printed p. 23 (PDF p. 28). [Source](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf#page=28) | The workflow preserves human decision review and an approval step before a consequential state change; the engine evaluates approval before allowing execution. | [Workflow design](workflow-before-after.md); `test_high_risk_requires_human_approval` and `test_high_risk_allows_after_human_approval` in [test_arbitration.py](../tests/test_arbitration.py). | Organizational policies, named role holders, training, and authenticated human approval are not established. Approval in the reference is a supplied Boolean. |
+| **MAP 3.5** — define, assess, and document human oversight processes consistently with governance policies. Printed p. 27 (PDF p. 32). [Source](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf#page=32) | The fictional workflow identifies human review at S13 and approval at S15, with the approved action executed at S16. | [17-step fixture](../examples/synthetic_bank_workflow.json), [workflow comparison](workflow-before-after.md), and the simulated approval cases in [test_api.py](../tests/test_api.py). | The fixture and tests do not assess real reviewers' capacity, judgment, escalation performance, or an organization's adopted oversight process. |
+| **MEASURE 2.1** — document test sets, metrics, and the tools used for testing, evaluation, verification, and validation. Printed p. 29 (PDF p. 34). [Source](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf#page=34) | Fixed synthetic scenarios have explicit expected decisions and execution outcomes, with runnable Python and browser-client suites and dated verification. | Independent expected-outcome matrix in [test_api.py](../tests/test_api.py); [test_scenario_contract.py](../tests/test_scenario_contract.py); [dated verification](verification-2026-11-09.md). | The fixtures are not a representative deployment population and do not establish model quality or statistical reliability. Illustrative workflow metrics are not observed business outcomes. |
+| **MEASURE 2.7** — evaluate and document AI-system security and resilience. Printed p. 30 (PDF p. 35). [Source](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf#page=35) | The reference tests direct execution without a permit, tampered permits, changed action payloads, and failures in evidence recording. | [Threat model](threat-model.md); `test_direct_execution_without_permit_is_blocked` and `test_tampered_permit_is_blocked` in [test_gateway.py](../tests/test_gateway.py); [test_permit_binding.py](../tests/test_permit_binding.py); [test_governed_evidence.py](../tests/test_governed_evidence.py). | These are application-level tests, not independent penetration testing or proof of production isolation, authenticated approval, secrets protection, or recovery readiness. |
+| **MANAGE 1.1** — determine whether the system meets its purpose and whether development or deployment should proceed. Printed p. 32 (PDF p. 37). [Source](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf#page=37) | Release gates separate a synthetic demonstration, a limited assessment, and production integration, with evidence and an accountable reviewer required for acceptance. | [Release-readiness framework](release-readiness-framework.md) and [dated verification](verification-2026-11-09.md). This row concerns documented decision criteria, not an automated test of management approval. | No enterprise or proprietary-product deployment approval is established by the public repository. The deploying organization must make and record its own decision. |
 
-The repository currently references **AI RMF 1.0** and the **NIST AI 600-1 Generative AI Profile**. NIST has stated that AI RMF 1.0 is under revision in 2026, so mappings should be versioned rather than treated as permanent.
+## Reading the evidence
 
-Official reference: https://www.nist.gov/itl/ai-risk-management-framework
+An authorization result and an execution result answer different questions. The [evidence model](evidence-model.md) and [execution-evidence tests](../tests/test_governed_evidence.py) preserve their relationship, including policy snapshots and blocked or failed outcomes. This supports review of the reference's behavior; it does not establish the completeness or integrity of an organization's audit records.
 
-## MITRE ATLAS
+The [case study](case-study.md) explains Juan's contribution and the practical purpose of these artifacts. Every result should be read with its revision, configuration, and stated limitations. Reference tests do not validate the private Sentinel product, and a policy mapping does not itself demonstrate operating effectiveness.
 
-ATLAS is a living knowledge base for adversarial behavior involving AI-enabled systems, including agentic AI.
+## Other reference material
 
-Sentinel's reference controls are relevant to threat themes such as agent tool invocation, unauthorized capability use, poisoned context/tools, credential misuse, and harmful actions because the design narrows delegated tools and actions and requires a separate execution permit.
+The repository also draws on [MITRE ATLAS](https://atlas.mitre.org/) and the [OWASP Top 10 for Agentic Applications 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/) when discussing unauthorized actions, tool misuse, and execution boundaries. These are contextual references; this document makes no complete coverage claim for either resource. The NIST AI 600-1 Generative AI Profile is background reading and is not mapped by the AI RMF 1.0 table above.
 
-Official reference: https://atlas.mitre.org/
-
-## OWASP Top 10 for Agentic Applications 2026
-
-The OWASP agentic guidance emphasizes risks including goal hijacking, tool misuse, identity/privilege abuse, agentic supply-chain vulnerabilities, and unexpected code execution.
-
-The reference repository addresses a subset of those concerns through explicit agent authority, approved tools, risk ceilings, protected execution, fail-closed behavior, and evidence traces.
-
-Official reference: https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/
-
-## Interpretation
-
-Framework alignment should answer a narrow question: **which risk or governance concern is this implementation mechanism intended to address?**
-
-It should not be used to imply certification, regulatory conformity, or complete control coverage.
+Framework versions and mappings should be reviewed when the source changes. [NIST's AI RMF resource center](https://airc.nist.gov/airmf-resources/airmf/5-sec-core/) identifies a revision as in progress; the table intentionally remains tied to the January 2023 publication.
