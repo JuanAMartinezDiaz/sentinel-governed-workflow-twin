@@ -10,6 +10,8 @@
 
 [Read the case study](docs/case-study.md) for my contribution, design decisions, and limitations. The [NIST AI RMF crosswalk](docs/framework-alignment.md) connects selected outcomes to controls, tests, and remaining gaps. [Dated verification](docs/verification-2026-11-09.md) identifies the reviewed revision and results.
 
+[Read the Hugging Face model-evaluation case study](docs/hugging-face-model-evaluation.md) for a separate local comparison of Qwen and Nemotron candidates, the observed failure patterns, and the resulting development decision. The public reference does not integrate a language model.
+
 ## 3-minute executive review
 
 **[Open the live Sentinel governance demo](https://juanamartinezdiaz.github.io/sentinel-governed-workflow-twin/)**
