@@ -1,0 +1,595 @@
+{
+  "notice": "Synthetic structural examples; hashes and JWS strings are placeholders, not cryptographically valid.",
+  "examples": {
+    "PolicyDefinition": {
+      "contract_version": "1.0.0",
+      "tenant_id": "cedar-bank",
+      "environment": "sandbox",
+      "policy_id": "FEE-REFUND",
+      "version": 7,
+      "source_refs": [
+        {
+          "system_id": "grc-sandbox",
+          "tenant_id": "cedar-bank",
+          "record_id": "GRC-441",
+          "revision": "12",
+          "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "owner_subject": "control-owner-1",
+      "mapping_version": "fee-mapping-1",
+      "scope": {
+        "action": "POST_FEE_REFUND",
+        "tool_id": "core.refund.v1",
+        "workflow_id": "fee-remediation-v1",
+        "account_partition": "retail-us",
+        "currency": "USD",
+        "max_amount_minor": 50000
+      },
+      "approval_requirement": {
+        "above_amount_minor": 10000,
+        "required_role": "fee-refund-manager",
+        "independent_of_maker": true,
+        "max_age_seconds": 600,
+        "required_acr": "bank-step-up"
+      },
+      "limits": {
+        "per_case_minor": 50000,
+        "per_account_daily_minor": 50000,
+        "per_grant_daily_minor": 500000,
+        "permit_ttl_seconds": 60,
+        "source_freshness": "VERIFY_AT_ISSUE_AND_ADMISSION"
+      },
+      "valid_from": "2026-11-12T15:00:00Z",
+      "valid_until": "2026-11-12T16:00:00Z"
+    },
+    "PolicyCandidate": {
+      "contract_version": "1.0.0",
+      "definition": {
+        "contract_version": "1.0.0",
+        "tenant_id": "cedar-bank",
+        "environment": "sandbox",
+        "policy_id": "FEE-REFUND",
+        "version": 7,
+        "source_refs": [
+          {
+            "system_id": "grc-sandbox",
+            "tenant_id": "cedar-bank",
+            "record_id": "GRC-441",
+            "revision": "12",
+            "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "owner_subject": "control-owner-1",
+        "mapping_version": "fee-mapping-1",
+        "scope": {
+          "action": "POST_FEE_REFUND",
+          "tool_id": "core.refund.v1",
+          "workflow_id": "fee-remediation-v1",
+          "account_partition": "retail-us",
+          "currency": "USD",
+          "max_amount_minor": 50000
+        },
+        "approval_requirement": {
+          "above_amount_minor": 10000,
+          "required_role": "fee-refund-manager",
+          "independent_of_maker": true,
+          "max_age_seconds": 600,
+          "required_acr": "bank-step-up"
+        },
+        "limits": {
+          "per_case_minor": 50000,
+          "per_account_daily_minor": 50000,
+          "per_grant_daily_minor": 500000,
+          "permit_ttl_seconds": 60,
+          "source_freshness": "VERIFY_AT_ISSUE_AND_ADMISSION"
+        },
+        "valid_from": "2026-11-12T15:00:00Z",
+        "valid_until": "2026-11-12T16:00:00Z"
+      }
+    },
+    "PolicyRecord": {
+      "contract_version": "1.0.0",
+      "definition": {
+        "contract_version": "1.0.0",
+        "tenant_id": "cedar-bank",
+        "environment": "sandbox",
+        "policy_id": "FEE-REFUND",
+        "version": 7,
+        "source_refs": [
+          {
+            "system_id": "grc-sandbox",
+            "tenant_id": "cedar-bank",
+            "record_id": "GRC-441",
+            "revision": "12",
+            "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "owner_subject": "control-owner-1",
+        "mapping_version": "fee-mapping-1",
+        "scope": {
+          "action": "POST_FEE_REFUND",
+          "tool_id": "core.refund.v1",
+          "workflow_id": "fee-remediation-v1",
+          "account_partition": "retail-us",
+          "currency": "USD",
+          "max_amount_minor": 50000
+        },
+        "approval_requirement": {
+          "above_amount_minor": 10000,
+          "required_role": "fee-refund-manager",
+          "independent_of_maker": true,
+          "max_age_seconds": 600,
+          "required_acr": "bank-step-up"
+        },
+        "limits": {
+          "per_case_minor": 50000,
+          "per_account_daily_minor": 50000,
+          "per_grant_daily_minor": 500000,
+          "permit_ttl_seconds": 60,
+          "source_freshness": "VERIFY_AT_ISSUE_AND_ADMISSION"
+        },
+        "valid_from": "2026-11-12T15:00:00Z",
+        "valid_until": "2026-11-12T16:00:00Z"
+      },
+      "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "state": "ACTIVE",
+      "publisher_subject": "publisher-1",
+      "reviewer_subject": "reviewer-2",
+      "activated_at": "2026-11-12T15:00:00Z"
+    },
+    "ActivationRequest": {
+      "contract_version": "1.0.0",
+      "expected_version": 7,
+      "expected_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "review_attestation_jws": "syntheticHeader.syntheticPayload.syntheticSignature"
+    },
+    "DelegationDefinition": {
+      "contract_version": "1.0.0",
+      "tenant_id": "cedar-bank",
+      "environment": "sandbox",
+      "grant_id": "GRANT-42",
+      "revision": 3,
+      "parent_grant": {
+        "id": "GRANT-PARENT",
+        "revision": 1,
+        "revocation_epoch": 0
+      },
+      "root_authority_source": {
+        "system_id": "grc-sandbox",
+        "tenant_id": "cedar-bank",
+        "record_id": "GRC-441",
+        "revision": "12",
+        "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "workload_subject": "refund-agent-7",
+      "owner_subject": "operations-owner-1",
+      "policy": {
+        "id": "FEE-REFUND",
+        "version": 7,
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "scope": {
+        "action": "POST_FEE_REFUND",
+        "tool_id": "core.refund.v1",
+        "workflow_id": "fee-remediation-v1",
+        "account_partition": "retail-us",
+        "currency": "USD",
+        "max_amount_minor": 50000
+      },
+      "budget_minor": 500000,
+      "valid_from": "2026-11-12T15:00:00Z",
+      "valid_until": "2026-11-12T16:00:00Z"
+    },
+    "DelegationRecord": {
+      "contract_version": "1.0.0",
+      "definition": {
+        "contract_version": "1.0.0",
+        "tenant_id": "cedar-bank",
+        "environment": "sandbox",
+        "grant_id": "GRANT-42",
+        "revision": 3,
+        "parent_grant": {
+          "id": "GRANT-PARENT",
+          "revision": 1,
+          "revocation_epoch": 0
+        },
+        "root_authority_source": {
+          "system_id": "grc-sandbox",
+          "tenant_id": "cedar-bank",
+          "record_id": "GRC-441",
+          "revision": "12",
+          "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "workload_subject": "refund-agent-7",
+        "owner_subject": "operations-owner-1",
+        "policy": {
+          "id": "FEE-REFUND",
+          "version": 7,
+          "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "scope": {
+          "action": "POST_FEE_REFUND",
+          "tool_id": "core.refund.v1",
+          "workflow_id": "fee-remediation-v1",
+          "account_partition": "retail-us",
+          "currency": "USD",
+          "max_amount_minor": 50000
+        },
+        "budget_minor": 500000,
+        "valid_from": "2026-11-12T15:00:00Z",
+        "valid_until": "2026-11-12T16:00:00Z"
+      },
+      "state": "ACTIVE",
+      "revocation_epoch": 0,
+      "authorizer_subject": "authority-owner-1"
+    },
+    "DelegationActivationRequest": {
+      "contract_version": "1.0.0",
+      "expected_revision": 3,
+      "expected_policy_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "authority_attestation_jws": "syntheticHeader.syntheticPayload.syntheticSignature"
+    },
+    "ActionRequest": {
+      "contract_version": "1.0.0",
+      "workflow_id": "fee-remediation-v1",
+      "case_id": "CASE-2041",
+      "action": "POST_FEE_REFUND",
+      "tool_id": "core.refund.v1",
+      "resource": {
+        "account_ref": "acct-token-804",
+        "case_version": "17"
+      },
+      "parameters": {
+        "amount_minor": 25000,
+        "currency": "USD",
+        "fee_item_ids": [
+          "fee-91",
+          "fee-92"
+        ],
+        "reason_code": "BANK_PROCESSING_ERROR"
+      }
+    },
+    "CanonicalIntent": {
+      "contract_version": "1.0.0",
+      "request_id": "req-2041",
+      "request": {
+        "contract_version": "1.0.0",
+        "workflow_id": "fee-remediation-v1",
+        "case_id": "CASE-2041",
+        "action": "POST_FEE_REFUND",
+        "tool_id": "core.refund.v1",
+        "resource": {
+          "account_ref": "acct-token-804",
+          "case_version": "17"
+        },
+        "parameters": {
+          "amount_minor": 25000,
+          "currency": "USD",
+          "fee_item_ids": [
+            "fee-91",
+            "fee-92"
+          ],
+          "reason_code": "BANK_PROCESSING_ERROR"
+        }
+      },
+      "workload": {
+        "issuer": "https://identity.example.invalid",
+        "subject": "refund-agent-7",
+        "tenant_id": "cedar-bank",
+        "environment": "sandbox",
+        "audience": "sentinel-authority",
+        "certificate_thumbprint": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "authenticated_at": "2026-11-12T15:00:00Z"
+      },
+      "request_maker_subject": "maker-1",
+      "policy": {
+        "id": "FEE-REFUND",
+        "version": 7,
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "delegation": {
+        "id": "GRANT-42",
+        "revision": 3,
+        "revocation_epoch": 0
+      },
+      "source_refs": [
+        {
+          "system_id": "grc-sandbox",
+          "tenant_id": "cedar-bank",
+          "record_id": "GRC-441",
+          "revision": "12",
+          "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "resource_versions": [
+        {
+          "resource_id": "CASE-2041",
+          "version": "17"
+        },
+        {
+          "resource_id": "fee-ledger-804",
+          "version": "29"
+        }
+      ],
+      "business_operation_key": "refund:cedar:804:91-92",
+      "target": {
+        "adapter_id": "core.refund.v1",
+        "method": "POST",
+        "operation": "post_fee_refund",
+        "schema_version": "1.0.0"
+      }
+    },
+    "ApprovalSubmission": {
+      "contract_version": "1.0.0",
+      "approval_id": "apr-2041",
+      "decision": "APPROVE",
+      "binding": {
+        "tenant_id": "cedar-bank",
+        "request_id": "req-2041",
+        "action_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policy": {
+          "id": "FEE-REFUND",
+          "version": 7,
+          "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "delegation": {
+          "id": "GRANT-42",
+          "revision": 3,
+          "revocation_epoch": 0
+        },
+        "source_refs": [
+          {
+            "system_id": "grc-sandbox",
+            "tenant_id": "cedar-bank",
+            "record_id": "GRC-441",
+            "revision": "12",
+            "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "resource_versions": [
+          {
+            "resource_id": "CASE-2041",
+            "version": "17"
+          },
+          {
+            "resource_id": "fee-ledger-804",
+            "version": "29"
+          }
+        ]
+      },
+      "attestation_jws": "syntheticHeader.syntheticPayload.syntheticSignature",
+      "reason_code": "VALIDATED_BANK_ERROR"
+    },
+    "ApprovalRecord": {
+      "contract_version": "1.0.0",
+      "approval_id": "apr-2041",
+      "decision": "APPROVE",
+      "binding": {
+        "tenant_id": "cedar-bank",
+        "request_id": "req-2041",
+        "action_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policy": {
+          "id": "FEE-REFUND",
+          "version": 7,
+          "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "delegation": {
+          "id": "GRANT-42",
+          "revision": 3,
+          "revocation_epoch": 0
+        },
+        "source_refs": [
+          {
+            "system_id": "grc-sandbox",
+            "tenant_id": "cedar-bank",
+            "record_id": "GRC-441",
+            "revision": "12",
+            "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        ],
+        "resource_versions": [
+          {
+            "resource_id": "CASE-2041",
+            "version": "17"
+          },
+          {
+            "resource_id": "fee-ledger-804",
+            "version": "29"
+          }
+        ]
+      },
+      "attestation_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "approver_issuer": "https://identity.example.invalid",
+      "approver_subject": "manager-2",
+      "verified_role": "fee-refund-manager",
+      "acr": "bank-step-up",
+      "auth_time": "2026-11-12T15:00:00Z",
+      "decided_at": "2026-11-12T15:00:00Z",
+      "expires_at": "2026-11-12T15:10:00Z",
+      "reason_code": "VALIDATED_BANK_ERROR"
+    },
+    "PermitClaims": {
+      "contract_version": "1.0.0",
+      "iss": "https://sentinel.example.invalid",
+      "aud": "bank-refund-executor",
+      "sub": "refund-agent-7",
+      "tenant_id": "cedar-bank",
+      "environment": "sandbox",
+      "jti": "permit-2041",
+      "iat": 1794495600,
+      "nbf": 1794495600,
+      "exp": 1794495660,
+      "action_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "policy": {
+        "id": "FEE-REFUND",
+        "version": 7,
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "delegation": {
+        "id": "GRANT-42",
+        "revision": 3,
+        "revocation_epoch": 0
+      },
+      "source_refs": [
+        {
+          "system_id": "grc-sandbox",
+          "tenant_id": "cedar-bank",
+          "record_id": "GRC-441",
+          "revision": "12",
+          "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "resource_versions": [
+        {
+          "resource_id": "CASE-2041",
+          "version": "17"
+        },
+        {
+          "resource_id": "fee-ledger-804",
+          "version": "29"
+        }
+      ],
+      "business_operation_key": "refund:cedar:804:91-92",
+      "approval": {
+        "approval_id": "apr-2041",
+        "attestation_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "cnf": {
+        "x5t#S256": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+      }
+    },
+    "DecisionResponse": {
+      "contract_version": "1.0.0",
+      "request_id": "req-2041",
+      "decision_id": "decision-2041",
+      "disposition": "REQUIRE_APPROVAL",
+      "reason_code": "AMOUNT_REQUIRES_APPROVAL",
+      "action_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "policy": {
+        "id": "FEE-REFUND",
+        "version": 7,
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "delegation": {
+        "id": "GRANT-42",
+        "revision": 3,
+        "revocation_epoch": 0
+      },
+      "approval_id": "apr-2041",
+      "permit": null
+    },
+    "ExecutionRequest": {
+      "contract_version": "1.0.0",
+      "request_id": "req-2041",
+      "action_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "permit_jws": "syntheticHeader.syntheticPayload.syntheticSignature"
+    },
+    "ExecutionResponse": {
+      "contract_version": "1.0.0",
+      "execution_id": "exec-2041",
+      "request_id": "req-2041",
+      "business_operation_key": "refund:cedar:804:91-92",
+      "status": "SUCCEEDED",
+      "outcome": "APPLIED",
+      "receipt": {
+        "provider": "core-sandbox",
+        "receipt_id": "receipt-2041",
+        "business_operation_key": "refund:cedar:804:91-92",
+        "amount_minor": 25000,
+        "currency": "USD",
+        "account_ref": "acct-token-804",
+        "committed_at": "2026-11-12T15:00:00Z"
+      },
+      "reason_code": "BANK_RECEIPT_CONFIRMED"
+    },
+    "RevocationRequest": {
+      "contract_version": "1.0.0",
+      "target_type": "GRANT",
+      "target_id": "GRANT-42",
+      "expected_epoch": 0,
+      "reason_code": "OWNER_WITHDREW_AUTHORITY",
+      "source_ref": {
+        "system_id": "grc-sandbox",
+        "tenant_id": "cedar-bank",
+        "record_id": "GRC-441",
+        "revision": "12",
+        "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    "RevocationReceipt": {
+      "contract_version": "1.0.0",
+      "revocation_id": "rev-42",
+      "target_type": "GRANT",
+      "target_id": "GRANT-42",
+      "committed_epoch": 1,
+      "acknowledged_at": "2026-11-12T15:00:00Z",
+      "effective_boundary": "DISPATCH_ADMISSION",
+      "inflight_cancellation_guaranteed": false
+    },
+    "EvidenceEvent": {
+      "contract_version": "1.0.0",
+      "event_id": "event-2041",
+      "event_type": "EXECUTION",
+      "tenant_id": "cedar-bank",
+      "workflow_id": "fee-remediation-v1",
+      "request_id": "req-2041",
+      "decision_id": "decision-2041",
+      "permit_id": "permit-2041",
+      "approval_id": "apr-2041",
+      "execution_id": "exec-2041",
+      "revocation_id": null,
+      "recorded_at": "2026-11-12T15:00:00Z",
+      "source_refs": [
+        {
+          "system_id": "grc-sandbox",
+          "tenant_id": "cedar-bank",
+          "record_id": "GRC-441",
+          "revision": "12",
+          "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "policy": {
+        "id": "FEE-REFUND",
+        "version": 7,
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "delegation": {
+        "id": "GRANT-42",
+        "revision": 3,
+        "revocation_epoch": 0
+      },
+      "action_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "disposition": "ALLOW",
+      "execution_status": "SUCCEEDED",
+      "outcome": "APPLIED",
+      "receipt": {
+        "provider": "core-sandbox",
+        "receipt_id": "receipt-2041",
+        "business_operation_key": "refund:cedar:804:91-92",
+        "amount_minor": 25000,
+        "currency": "USD",
+        "account_ref": "acct-token-804",
+        "committed_at": "2026-11-12T15:00:00Z"
+      },
+      "reason_code": "BANK_RECEIPT_CONFIRMED",
+      "evidence_uri": "https://evidence.example.invalid/events/event-2041",
+      "event_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "previous_event_digest": null
+    },
+    "EvidenceAck": {
+      "contract_version": "1.0.0",
+      "event_id": "event-2041",
+      "source_record_id": "GRC-441",
+      "accepted_at": "2026-11-12T15:00:00Z",
+      "source_attachment_id": "attachment-2041"
+    },
+    "Error": {
+      "contract_version": "1.0.0",
+      "error": "AUTHORITY_UNAVAILABLE",
+      "correlation_id": "corr-2041",
+      "message": "Required authority state unavailable",
+      "retryable": false
+    }
+  }
+}

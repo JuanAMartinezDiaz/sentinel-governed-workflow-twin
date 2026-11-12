@@ -1,0 +1,917 @@
+{
+  "catalog_version": "1.0.0",
+  "oracle_origin": "Explicit fictional bank rules R01-R10; authored without calling the reference engine. Not an independent assurance review.",
+  "runtime_execution": "NOT_IMPLEMENTED",
+  "cases": [
+    {
+      "id": "A01",
+      "family": "approval",
+      "requirement_ids": [
+        "R01",
+        "R04"
+      ],
+      "setup": "Use baseline $250 refund without approval.",
+      "sequence": [
+        "request_action"
+      ],
+      "expected": {
+        "result": "REQUIRE_APPROVAL",
+        "reason_code": "AMOUNT_REQUIRES_APPROVAL",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A02",
+      "family": "approval",
+      "requirement_ids": [
+        "R01",
+        "R04",
+        "R07"
+      ],
+      "setup": "Attach verified apr-2041; manager-2 independent of maker-1, current role and all bound versions match.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "execute"
+      ],
+      "expected": {
+        "result": "SUCCEEDED",
+        "reason_code": "BANK_RECEIPT_CONFIRMED",
+        "new_business_effects": 1,
+        "permit": "ISSUED_AND_CONSUMED"
+      },
+      "baseline_overrides": {
+        "/approval": {
+          "contract_version": "1.0.0",
+          "approval_id": "apr-2041",
+          "decision": "APPROVE",
+          "binding": {
+            "tenant_id": "cedar-bank",
+            "request_id": "req-2041",
+            "action_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "policy": {
+              "id": "FEE-REFUND",
+              "version": 7,
+              "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            },
+            "delegation": {
+              "id": "GRANT-42",
+              "revision": 3,
+              "revocation_epoch": 0
+            },
+            "source_refs": [
+              {
+                "system_id": "grc-sandbox",
+                "tenant_id": "cedar-bank",
+                "record_id": "GRC-441",
+                "revision": "12",
+                "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              }
+            ],
+            "resource_versions": [
+              {
+                "resource_id": "CASE-2041",
+                "version": "17"
+              },
+              {
+                "resource_id": "fee-ledger-804",
+                "version": "29"
+              }
+            ]
+          },
+          "attestation_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "approver_issuer": "https://identity.example.invalid",
+          "approver_subject": "manager-2",
+          "verified_role": "fee-refund-manager",
+          "acr": "bank-step-up",
+          "auth_time": "2026-11-12T15:00:00Z",
+          "decided_at": "2026-11-12T15:00:00Z",
+          "expires_at": "2026-11-12T15:10:00Z",
+          "reason_code": "VALIDATED_BANK_ERROR"
+        }
+      },
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A03",
+      "family": "threshold",
+      "requirement_ids": [
+        "R01"
+      ],
+      "setup": "Set refund and trusted eligible fee total to $100.",
+      "sequence": [
+        "request_action",
+        "execute"
+      ],
+      "expected": {
+        "result": "SUCCEEDED",
+        "reason_code": "WITHIN_AUTONOMOUS_LIMIT",
+        "new_business_effects": 1,
+        "permit": "ISSUED_AND_CONSUMED"
+      },
+      "baseline_overrides": {
+        "/request/parameters/amount_minor": 10000,
+        "/facts/fee_item_total_minor": 10000
+      },
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A04",
+      "family": "threshold",
+      "requirement_ids": [
+        "R01"
+      ],
+      "setup": "Set refund and eligible fee total to $100.01.",
+      "sequence": [
+        "request_action"
+      ],
+      "expected": {
+        "result": "REQUIRE_APPROVAL",
+        "reason_code": "AMOUNT_REQUIRES_APPROVAL",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {
+        "/request/parameters/amount_minor": 10001,
+        "/facts/fee_item_total_minor": 10001
+      },
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A05",
+      "family": "threshold",
+      "requirement_ids": [
+        "R01"
+      ],
+      "setup": "Set refund and eligible fee total to $500; approval absent.",
+      "sequence": [
+        "request_action"
+      ],
+      "expected": {
+        "result": "REQUIRE_APPROVAL",
+        "reason_code": "AMOUNT_REQUIRES_APPROVAL",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {
+        "/request/parameters/amount_minor": 50000,
+        "/facts/fee_item_total_minor": 50000
+      },
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A06",
+      "family": "authority",
+      "requirement_ids": [
+        "R01",
+        "R03"
+      ],
+      "setup": "Set refund and eligible fee total to $500.01; even a manager approval cannot widen grant.",
+      "sequence": [
+        "request_action",
+        "attempt_approval"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "AMOUNT_EXCEEDS_DELEGATION",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {
+        "/request/parameters/amount_minor": 50001,
+        "/facts/fee_item_total_minor": 50001
+      },
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A07",
+      "family": "identity",
+      "requirement_ids": [
+        "R02"
+      ],
+      "setup": "Present valid token for different tenant; body still names CASE-2041.",
+      "sequence": [
+        "request_action"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "TENANT_MISMATCH",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A08",
+      "family": "identity",
+      "requirement_ids": [
+        "R02"
+      ],
+      "setup": "Present stolen valid token with a different client certificate.",
+      "sequence": [
+        "request_action"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "CALLER_BINDING_MISMATCH",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A09",
+      "family": "approval",
+      "requirement_ids": [
+        "R04"
+      ],
+      "setup": "Submit human_approved=true instead of a trusted-backend approval.",
+      "sequence": [
+        "request_action"
+      ],
+      "expected": {
+        "result": "REJECT",
+        "reason_code": "INVALID_CONTRACT",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A10",
+      "family": "approval",
+      "requirement_ids": [
+        "R04"
+      ],
+      "setup": "maker-1 tries to approve their own request through an authenticated session.",
+      "sequence": [
+        "request_action",
+        "submit_approval"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "SEPARATION_OF_DUTIES",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A11",
+      "family": "approval",
+      "requirement_ids": [
+        "R04"
+      ],
+      "setup": "Approve at 15:00Z; attempt at exactly 15:10Z.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "advance_clock",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "APPROVAL_EXPIRED",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A12",
+      "family": "approval",
+      "requirement_ids": [
+        "R04"
+      ],
+      "setup": "A verified approver role is removed before admission.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "remove_role",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "APPROVER_AUTHORITY_INACTIVE",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A13",
+      "family": "binding",
+      "requirement_ids": [
+        "R04",
+        "R05"
+      ],
+      "setup": "Approve $250 then change intent to $750 without new authorization.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "mutate_intent",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "ACTION_DIGEST_MISMATCH",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A14",
+      "family": "binding",
+      "requirement_ids": [
+        "R05",
+        "R06"
+      ],
+      "setup": "Activate policy v8 after a v7 permit is issued.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "publish_policy",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "POLICY_VERSION_CHANGED",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A15",
+      "family": "revocation",
+      "requirement_ids": [
+        "R03",
+        "R06"
+      ],
+      "setup": "Acknowledge grant revocation before admission; original permit has not expired.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "revoke_grant",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "AUTHORITY_REVOKED",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A16",
+      "family": "revocation",
+      "requirement_ids": [
+        "R03",
+        "R06"
+      ],
+      "setup": "Revoke parent grant before child grant admission.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "revoke_parent",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "PARENT_AUTHORITY_REVOKED",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A17",
+      "family": "revocation",
+      "requirement_ids": [
+        "R06",
+        "R09"
+      ],
+      "setup": "Bank already committed; revocation then acknowledged.",
+      "sequence": [
+        "bank_commit",
+        "revoke_grant",
+        "reconcile"
+      ],
+      "expected": {
+        "result": "RECONCILED",
+        "reason_code": "ALREADY_COMMITTED_RECOVERY_REQUIRED",
+        "new_business_effects": 0,
+        "permit": "ALREADY_CONSUMED"
+      },
+      "baseline_overrides": {
+        "/execution/business_effect_count": 1,
+        "/execution/state": "SUCCEEDED"
+      },
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A18",
+      "family": "replay",
+      "requirement_ids": [
+        "R05",
+        "R07"
+      ],
+      "setup": "Replay exactly the same consumed permit under a fresh transport key.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "execute",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "PERMIT_ALREADY_CONSUMED",
+        "new_business_effects": 1,
+        "permit": "ALREADY_CONSUMED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A19",
+      "family": "duplicate-effect",
+      "requirement_ids": [
+        "R07"
+      ],
+      "setup": "Obtain two valid permits for the same fee items and business purpose, then execute concurrently.",
+      "sequence": [
+        "issue_two_permits",
+        "race_execute"
+      ],
+      "expected": {
+        "result": "DEDUPLICATED",
+        "reason_code": "BUSINESS_OPERATION_ALREADY_EXISTS",
+        "new_business_effects": 1,
+        "permit": "ISSUED_AND_CONSUMED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A20",
+      "family": "aggregate",
+      "requirement_ids": [
+        "R01",
+        "R07"
+      ],
+      "setup": "Two distinct $75 refund requests on the same case; first commits before second admission. Cumulative $150 requires manager approval for second.",
+      "sequence": [
+        "execute_first",
+        "request_second"
+      ],
+      "expected": {
+        "result": "REQUIRE_APPROVAL",
+        "reason_code": "AGGREGATE_REQUIRES_APPROVAL",
+        "new_business_effects": 1,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A21",
+      "family": "aggregate",
+      "requirement_ids": [
+        "R01",
+        "R07"
+      ],
+      "setup": "Race two distinct $250 approved refunds with only $300 grant budget remaining.",
+      "sequence": [
+        "issue_two_permits",
+        "race_execute"
+      ],
+      "expected": {
+        "result": "ONE_SUCCEEDED_ONE_DENIED",
+        "reason_code": "BUDGET_EXHAUSTED",
+        "new_business_effects": 1,
+        "permit": "ISSUED_AND_CONSUMED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A22",
+      "family": "source",
+      "requirement_ids": [
+        "R03",
+        "R06"
+      ],
+      "setup": "GRC revision advances to 13 while active bundle still cites revision 12.",
+      "sequence": [
+        "request_action"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "SOURCE_REVISION_CHANGED",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A23",
+      "family": "source",
+      "requirement_ids": [
+        "R03",
+        "R09"
+      ],
+      "setup": "Source freshness check cannot reach authoritative GRC at admission.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "source_outage",
+        "execute"
+      ],
+      "expected": {
+        "result": "UNAVAILABLE",
+        "reason_code": "SOURCE_FRESHNESS_UNAVAILABLE",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A24",
+      "family": "resource",
+      "requirement_ids": [
+        "R05",
+        "R07"
+      ],
+      "setup": "Bank resource version changes after approval; conditional write fails.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "change_resource",
+        "execute"
+      ],
+      "expected": {
+        "result": "PRECONDITION_FAILED",
+        "reason_code": "RESOURCE_VERSION_CHANGED",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A25",
+      "family": "bypass",
+      "requirement_ids": [
+        "R08"
+      ],
+      "setup": "Agent container calls bank write endpoint directly with no protected executor identity.",
+      "sequence": [
+        "direct_bank_call"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "UNAUTHORIZED_TOOL_PATH",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A26",
+      "family": "failure",
+      "requirement_ids": [
+        "R09"
+      ],
+      "setup": "Durable admission journal fails before dispatch.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "journal_outage",
+        "execute"
+      ],
+      "expected": {
+        "result": "UNAVAILABLE",
+        "reason_code": "EVIDENCE_JOURNAL_UNAVAILABLE",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A27",
+      "family": "failure",
+      "requirement_ids": [
+        "R07",
+        "R09"
+      ],
+      "setup": "Bank commits but response is lost; query by business key reports original success.",
+      "sequence": [
+        "execute",
+        "drop_bank_response",
+        "mark_unknown",
+        "reconcile"
+      ],
+      "expected": {
+        "result": "RECONCILED",
+        "reason_code": "BANK_RECEIPT_CONFIRMED",
+        "new_business_effects": 1,
+        "permit": "ALREADY_CONSUMED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A28",
+      "family": "evidence",
+      "requirement_ids": [
+        "R09",
+        "R10"
+      ],
+      "setup": "GRC evidence delivery fails after bank success; duplicate outbox delivery is later acknowledged.",
+      "sequence": [
+        "execute",
+        "writeback_outage",
+        "redeliver_event",
+        "redeliver_event"
+      ],
+      "expected": {
+        "result": "SUCCEEDED",
+        "reason_code": "EVIDENCE_DELIVERY_DEDUPLICATED",
+        "new_business_effects": 1,
+        "permit": "ALREADY_CONSUMED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A29",
+      "family": "source",
+      "requirement_ids": [
+        "R03"
+      ],
+      "setup": "Two source records conflict on approval threshold; do not publish either silently.",
+      "sequence": [
+        "submit_policy_candidate",
+        "activate_policy"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "SOURCE_POLICY_CONFLICT",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A30",
+      "family": "authority",
+      "requirement_ids": [
+        "R03"
+      ],
+      "setup": "Child scope exceeds parent monetary cap or allowed tool set.",
+      "sequence": [
+        "submit_delegation",
+        "activate_delegation"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "DELEGATION_WIDENS_PARENT",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A31",
+      "family": "approval",
+      "requirement_ids": [
+        "R04"
+      ],
+      "setup": "Manager explicitly rejects the exact action.",
+      "sequence": [
+        "request_action",
+        "reject_approval"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "HUMAN_REJECTED",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A32",
+      "family": "approval",
+      "requirement_ids": [
+        "R04"
+      ],
+      "setup": "Manager withdraws approval after permit issuance and before admission.",
+      "sequence": [
+        "request_action",
+        "submit_approval",
+        "withdraw_approval",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "APPROVAL_WITHDRAWN",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A33",
+      "family": "binding",
+      "requirement_ids": [
+        "R05"
+      ],
+      "setup": "Present valid permit at exactly its exp value.",
+      "sequence": [
+        "issue_permit",
+        "advance_clock",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "PERMIT_EXPIRED",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A34",
+      "family": "binding",
+      "requirement_ids": [
+        "R05"
+      ],
+      "setup": "Present signature-valid permit to the wrong executor audience.",
+      "sequence": [
+        "issue_permit",
+        "execute_wrong_audience"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "PERMIT_AUDIENCE_MISMATCH",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A35",
+      "family": "idempotency",
+      "requirement_ids": [
+        "R07"
+      ],
+      "setup": "Reuse action request Idempotency-Key with changed amount.",
+      "sequence": [
+        "request_action",
+        "change_amount",
+        "reuse_request_key"
+      ],
+      "expected": {
+        "result": "CONFLICT",
+        "reason_code": "IDEMPOTENCY_CONTENT_CONFLICT",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A36",
+      "family": "input",
+      "requirement_ids": [
+        "R02",
+        "R03"
+      ],
+      "setup": "Inject instructions into source narrative to bypass approval; typed authorized fields stay unchanged.",
+      "sequence": [
+        "ingest_source",
+        "request_action"
+      ],
+      "expected": {
+        "result": "REQUIRE_APPROVAL",
+        "reason_code": "AMOUNT_REQUIRES_APPROVAL",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A37",
+      "family": "recovery",
+      "requirement_ids": [
+        "R06",
+        "R07",
+        "R09"
+      ],
+      "setup": "Restart and restore state after a consumed permit and committed refund; replay must not cause a second effect.",
+      "sequence": [
+        "bank_commit",
+        "restore_state",
+        "replay_permit"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "PERMIT_ALREADY_CONSUMED",
+        "new_business_effects": 0,
+        "permit": "ALREADY_CONSUMED"
+      },
+      "baseline_overrides": {
+        "/execution/business_effect_count": 1,
+        "/execution/permit_spent": true
+      },
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A38",
+      "family": "input",
+      "requirement_ids": [
+        "R02"
+      ],
+      "setup": "Raw JSON repeats amount_minor with two different values; reject before schema validation.",
+      "sequence": [
+        "parse_request"
+      ],
+      "expected": {
+        "result": "REJECT",
+        "reason_code": "DUPLICATE_JSON_KEY",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A39",
+      "family": "input",
+      "requirement_ids": [
+        "R02"
+      ],
+      "setup": "Raw JSON includes NaN, Infinity or an integer beyond supported exact range.",
+      "sequence": [
+        "parse_request"
+      ],
+      "expected": {
+        "result": "REJECT",
+        "reason_code": "INVALID_JSON_NUMBER",
+        "new_business_effects": 0,
+        "permit": "NONE"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    },
+    {
+      "id": "A40",
+      "family": "key-management",
+      "requirement_ids": [
+        "R05",
+        "R09"
+      ],
+      "setup": "Signing key is revoked as compromised before admission; signature previously verified with that key.",
+      "sequence": [
+        "issue_permit",
+        "revoke_signing_key",
+        "execute"
+      ],
+      "expected": {
+        "result": "DENY",
+        "reason_code": "SIGNING_KEY_REVOKED",
+        "new_business_effects": 0,
+        "permit": "REJECTED"
+      },
+      "baseline_overrides": {},
+      "runtime_status": "NOT_RUN"
+    }
+  ]
+}
