@@ -1,0 +1,142 @@
+{
+  "clock": "2026-11-12T15:00:00Z",
+  "policy": {
+    "contract_version": "1.0.0",
+    "definition": {
+      "contract_version": "1.0.0",
+      "tenant_id": "cedar-bank",
+      "environment": "sandbox",
+      "policy_id": "FEE-REFUND",
+      "version": 7,
+      "source_refs": [
+        {
+          "system_id": "grc-sandbox",
+          "tenant_id": "cedar-bank",
+          "record_id": "GRC-441",
+          "revision": "12",
+          "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "owner_subject": "control-owner-1",
+      "mapping_version": "fee-mapping-1",
+      "scope": {
+        "action": "POST_FEE_REFUND",
+        "tool_id": "core.refund.v1",
+        "workflow_id": "fee-remediation-v1",
+        "account_partition": "retail-us",
+        "currency": "USD",
+        "max_amount_minor": 50000
+      },
+      "approval_requirement": {
+        "above_amount_minor": 10000,
+        "required_role": "fee-refund-manager",
+        "independent_of_maker": true,
+        "max_age_seconds": 600,
+        "required_acr": "bank-step-up"
+      },
+      "limits": {
+        "per_case_minor": 50000,
+        "per_account_daily_minor": 50000,
+        "per_grant_daily_minor": 500000,
+        "permit_ttl_seconds": 60,
+        "source_freshness": "VERIFY_AT_ISSUE_AND_ADMISSION"
+      },
+      "valid_from": "2026-11-12T15:00:00Z",
+      "valid_until": "2026-11-12T16:00:00Z"
+    },
+    "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "state": "ACTIVE",
+    "publisher_subject": "publisher-1",
+    "reviewer_subject": "reviewer-2",
+    "activated_at": "2026-11-12T15:00:00Z"
+  },
+  "delegation": {
+    "contract_version": "1.0.0",
+    "definition": {
+      "contract_version": "1.0.0",
+      "tenant_id": "cedar-bank",
+      "environment": "sandbox",
+      "grant_id": "GRANT-42",
+      "revision": 3,
+      "parent_grant": {
+        "id": "GRANT-PARENT",
+        "revision": 1,
+        "revocation_epoch": 0
+      },
+      "root_authority_source": {
+        "system_id": "grc-sandbox",
+        "tenant_id": "cedar-bank",
+        "record_id": "GRC-441",
+        "revision": "12",
+        "content_digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "workload_subject": "refund-agent-7",
+      "owner_subject": "operations-owner-1",
+      "policy": {
+        "id": "FEE-REFUND",
+        "version": 7,
+        "digest": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      "scope": {
+        "action": "POST_FEE_REFUND",
+        "tool_id": "core.refund.v1",
+        "workflow_id": "fee-remediation-v1",
+        "account_partition": "retail-us",
+        "currency": "USD",
+        "max_amount_minor": 50000
+      },
+      "budget_minor": 500000,
+      "valid_from": "2026-11-12T15:00:00Z",
+      "valid_until": "2026-11-12T16:00:00Z"
+    },
+    "state": "ACTIVE",
+    "revocation_epoch": 0,
+    "authorizer_subject": "authority-owner-1"
+  },
+  "identity": {
+    "issuer": "https://identity.example.invalid",
+    "subject": "refund-agent-7",
+    "tenant_id": "cedar-bank",
+    "environment": "sandbox",
+    "audience": "sentinel-authority",
+    "certificate_thumbprint": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "authenticated_at": "2026-11-12T15:00:00Z"
+  },
+  "request": {
+    "contract_version": "1.0.0",
+    "workflow_id": "fee-remediation-v1",
+    "case_id": "CASE-2041",
+    "action": "POST_FEE_REFUND",
+    "tool_id": "core.refund.v1",
+    "resource": {
+      "account_ref": "acct-token-804",
+      "case_version": "17"
+    },
+    "parameters": {
+      "amount_minor": 25000,
+      "currency": "USD",
+      "fee_item_ids": [
+        "fee-91",
+        "fee-92"
+      ],
+      "reason_code": "BANK_PROCESSING_ERROR"
+    }
+  },
+  "approval": null,
+  "parent_active": true,
+  "source_current": true,
+  "facts": {
+    "fee_item_total_minor": 25000,
+    "original_account_ref": "acct-token-804",
+    "account_active": true,
+    "case_refunded_minor": 0,
+    "account_daily_refunded_minor": 0,
+    "grant_daily_reserved_minor": 0
+  },
+  "execution": {
+    "business_effect_count": 0,
+    "permit_spent": false,
+    "state": "NOT_STARTED",
+    "revocation_epoch": 0
+  }
+}

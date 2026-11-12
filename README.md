@@ -200,6 +200,15 @@ The included benchmark is deliberately illustrative and does **not** represent a
 
 The important design requirement is not the particular numbers. It is that an AI workflow redesign should declare which outcomes it expects to improve and preserve evidence sufficient to test the claim.
 
+## Proposed enterprise integration contracts
+
+The [Phase 1 contract package](contracts/enterprise/v1/README.md) specifies a
+proposed API connection between enterprise governance records and protected agent
+execution. It includes versioned schemas, explicit authority semantics and a
+future acceptance catalog. These enterprise APIs and integrations are **not
+implemented** by this package; contract validation is not runtime acceptance.
+See the [dated Phase 1 review record](docs/enterprise-integration-phase1.md).
+
 ## Framework alignment
 
 The repository contains implementation-oriented alignment notes for:

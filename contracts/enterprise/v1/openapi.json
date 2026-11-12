@@ -1,0 +1,3631 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Sentinel Enterprise API - Phase 1 Design",
+    "version": "1.0.0",
+    "description": "PROPOSED CONTRACT ONLY. No routes are implemented by this package. Reserved .invalid URLs prevent accidental use as a live service. All examples are synthetic."
+  },
+  "servers": [
+    {
+      "url": "https://sentinel.example.invalid",
+      "description": "Illustrative placeholder; not an operational service"
+    }
+  ],
+  "paths": {
+    "/v1/policy-candidates": {
+      "post": {
+        "operationId": "submitPolicyCandidate",
+        "summary": "Submit reviewed-source mapping candidate",
+        "security": [
+          {
+            "oauth2": [
+              "policy:candidate"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "description": "Bound to authenticated caller, tenant, route and canonical request. Reuse with changed content returns 409."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Candidate persisted; not active",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PolicyCandidate"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/policy-versions/{policy_id}/activate": {
+      "post": {
+        "operationId": "activatePolicyVersion",
+        "summary": "Activate exact policy version",
+        "security": [
+          {
+            "oauth2": [
+              "policy:activate"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "policy_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "description": "Bound to authenticated caller, tenant, route and canonical request. Reuse with changed content returns 409."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Independently reviewed policy activated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PolicyRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/delegation-candidates": {
+      "post": {
+        "operationId": "submitDelegationCandidate",
+        "summary": "Submit bounded delegation",
+        "security": [
+          {
+            "oauth2": [
+              "authority:candidate"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "description": "Bound to authenticated caller, tenant, route and canonical request. Reuse with changed content returns 409."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Grant candidate; no authority yet",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DelegationRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DelegationDefinition"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/delegations/{grant_id}/activate": {
+      "post": {
+        "operationId": "activateDelegation",
+        "summary": "Activate delegation within parent authority",
+        "security": [
+          {
+            "oauth2": [
+              "authority:activate"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "grant_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "description": "Bound to authenticated caller, tenant, route and canonical request. Reuse with changed content returns 409."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bounded grant activated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DelegationRecord"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DelegationActivationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/action-requests": {
+      "post": {
+        "operationId": "requestAction",
+        "summary": "Request exact action authorization",
+        "security": [
+          {
+            "oauth2": [
+              "actions:request"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "description": "Bound to authenticated caller, tenant, route and canonical request. Reuse with changed content returns 409."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "ALLOW with persisted permit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "REQUIRE_APPROVAL or FALLBACK; no permit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Domain decision DENY; no permit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/DecisionResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Error"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActionRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/action-requests/{request_id}": {
+      "get": {
+        "operationId": "getActionRequest",
+        "summary": "Read decision status",
+        "security": [
+          {
+            "oauth2": [
+              "actions:read"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Latest stored decision; read does not mint a permit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No visible request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/approval-decisions": {
+      "post": {
+        "operationId": "submitApprovalDecision",
+        "summary": "Submit trusted-backend attestation",
+        "security": [
+          {
+            "oauth2": [
+              "approvals:submit"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "description": "Bound to authenticated caller, tenant, route and canonical request. Reuse with changed content returns 409."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Re-evaluated decision or denial",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalSubmission"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/executions": {
+      "post": {
+        "operationId": "executeAction",
+        "summary": "Admit exact permitted action and dispatch fixed tool",
+        "security": [
+          {
+            "oauth2": [
+              "executions:submit"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "description": "Bound to authenticated caller, tenant, route and canonical request. Reuse with changed content returns 409."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Known result or idempotent prior result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Pending or unresolved; do not blindly retry",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionResponse"
+                }
+              }
+            }
+          },
+          "412": {
+            "description": "Resource precondition changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExecutionRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/executions/{execution_id}": {
+      "get": {
+        "operationId": "getExecution",
+        "summary": "Read result for reconciliation",
+        "security": [
+          {
+            "oauth2": [
+              "executions:read"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "execution_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recorded execution status",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecutionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No visible execution",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/revocations": {
+      "post": {
+        "operationId": "revokeAuthority",
+        "summary": "Revoke authority at dispatch admission boundary",
+        "security": [
+          {
+            "oauth2": [
+              "authority:revoke"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "description": "Bound to authenticated caller, tenant, route and canonical request. Reuse with changed content returns 409."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Durable admission fence acknowledged",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RevocationReceipt"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RevocationRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/evidence-events": {
+      "post": {
+        "operationId": "deliverEvidence",
+        "summary": "Deliver evidence to the GRC adapter (separate service)",
+        "security": [
+          {
+            "oauth2": [
+              "evidence:deliver"
+            ],
+            "mutualTLS": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "description": "Bound to authenticated caller, tenant, route and canonical request. Reuse with changed content returns 409."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "GRC record attachment confirmed; not merely queued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvidenceAck"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Malformed or unsupported contract",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthenticated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Caller lacks authority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Version or idempotency conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Required dependency unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvidenceEvent"
+              }
+            }
+          }
+        }
+      },
+      "servers": [
+        {
+          "url": "https://grc-adapter.example.invalid",
+          "description": "Adapter-owned evidence receiver; not a vendor-native GRC route"
+        }
+      ]
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "oauth2": {
+        "type": "oauth2",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://identity.example.invalid/oauth/token",
+            "scopes": {
+              "policy:candidate": "Proposed policy:candidate permission",
+              "policy:activate": "Proposed policy:activate permission",
+              "authority:candidate": "Proposed authority:candidate permission",
+              "authority:activate": "Proposed authority:activate permission",
+              "actions:request": "Proposed actions:request permission",
+              "actions:read": "Proposed actions:read permission",
+              "approvals:submit": "Proposed approvals:submit permission",
+              "executions:submit": "Proposed executions:submit permission",
+              "executions:read": "Proposed executions:read permission",
+              "authority:revoke": "Proposed authority:revoke permission",
+              "evidence:deliver": "Proposed evidence:deliver permission"
+            }
+          }
+        }
+      },
+      "mutualTLS": {
+        "type": "mutualTLS"
+      }
+    },
+    "schemas": {
+      "VersionRef": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "digest"
+        ]
+      },
+      "SourceRef": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "system_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "tenant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "record_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "revision": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "content_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "system_id",
+          "tenant_id",
+          "record_id",
+          "revision",
+          "content_digest"
+        ]
+      },
+      "ResourceVersion": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "resource_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          }
+        },
+        "required": [
+          "resource_id",
+          "version"
+        ]
+      },
+      "GrantRef": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "revocation_epoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "id",
+          "revision",
+          "revocation_epoch"
+        ]
+      },
+      "Scope": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "const": "POST_FEE_REFUND"
+          },
+          "tool_id": {
+            "const": "core.refund.v1"
+          },
+          "workflow_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "account_partition": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "currency": {
+            "const": "USD"
+          },
+          "max_amount_minor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": [
+          "action",
+          "tool_id",
+          "workflow_id",
+          "account_partition",
+          "currency",
+          "max_amount_minor"
+        ]
+      },
+      "ApprovalRequirement": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "above_amount_minor": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "required_role": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "independent_of_maker": {
+            "const": true
+          },
+          "max_age_seconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 600
+          },
+          "required_acr": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          }
+        },
+        "required": [
+          "above_amount_minor",
+          "required_role",
+          "independent_of_maker",
+          "max_age_seconds",
+          "required_acr"
+        ]
+      },
+      "Limits": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "per_case_minor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "per_account_daily_minor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "per_grant_daily_minor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "permit_ttl_seconds": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 60
+          },
+          "source_freshness": {
+            "const": "VERIFY_AT_ISSUE_AND_ADMISSION"
+          }
+        },
+        "required": [
+          "per_case_minor",
+          "per_account_daily_minor",
+          "per_grant_daily_minor",
+          "permit_ttl_seconds",
+          "source_freshness"
+        ]
+      },
+      "PolicyDefinition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "tenant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "production"
+            ]
+          },
+          "policy_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "owner_subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "mapping_version": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "approval_requirement": {
+            "$ref": "#/components/schemas/ApprovalRequirement"
+          },
+          "limits": {
+            "$ref": "#/components/schemas/Limits"
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          }
+        },
+        "required": [
+          "contract_version",
+          "tenant_id",
+          "environment",
+          "policy_id",
+          "version",
+          "source_refs",
+          "owner_subject",
+          "mapping_version",
+          "scope",
+          "approval_requirement",
+          "limits",
+          "valid_from",
+          "valid_until"
+        ]
+      },
+      "PolicyCandidate": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/PolicyDefinition"
+          }
+        },
+        "required": [
+          "contract_version",
+          "definition"
+        ]
+      },
+      "PolicyRecord": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/PolicyDefinition"
+          },
+          "digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "CANDIDATE",
+              "VALIDATED",
+              "APPROVED",
+              "ACTIVE",
+              "REVOKED",
+              "SUPERSEDED"
+            ]
+          },
+          "publisher_subject": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reviewer_subject": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "activated_at": {
+            "oneOf": [
+              {
+                "type": "string",
+                "format": "date-time",
+                "pattern": "Z$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "contract_version",
+          "definition",
+          "digest",
+          "state",
+          "publisher_subject",
+          "reviewer_subject",
+          "activated_at"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "ACTIVE"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "publisher_subject": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                },
+                "reviewer_subject": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                },
+                "activated_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "Z$"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ActivationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "expected_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expected_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "review_attestation_jws": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 16384,
+            "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$",
+            "description": "Compact JWS syntax only; cryptographic verification is mandatory at runtime. No sample is a real credential."
+          }
+        },
+        "required": [
+          "contract_version",
+          "expected_version",
+          "expected_digest",
+          "review_attestation_jws"
+        ]
+      },
+      "DelegationDefinition": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "tenant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "production"
+            ]
+          },
+          "grant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "parent_grant": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GrantRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "root_authority_source": {
+            "$ref": "#/components/schemas/SourceRef"
+          },
+          "workload_subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "owner_subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/VersionRef"
+          },
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "budget_minor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          }
+        },
+        "required": [
+          "contract_version",
+          "tenant_id",
+          "environment",
+          "grant_id",
+          "revision",
+          "parent_grant",
+          "root_authority_source",
+          "workload_subject",
+          "owner_subject",
+          "policy",
+          "scope",
+          "budget_minor",
+          "valid_from",
+          "valid_until"
+        ]
+      },
+      "DelegationRecord": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/DelegationDefinition"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "CANDIDATE",
+              "ACTIVE",
+              "SUSPENDED",
+              "EXPIRED",
+              "REVOKED",
+              "SUPERSEDED"
+            ]
+          },
+          "revocation_epoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "authorizer_subject": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "contract_version",
+          "definition",
+          "state",
+          "revocation_epoch",
+          "authorizer_subject"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "state": {
+                  "const": "ACTIVE"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "authorizer_subject": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "DelegationActivationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "expected_policy_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "authority_attestation_jws": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 16384,
+            "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$",
+            "description": "Compact JWS syntax only; cryptographic verification is mandatory at runtime. No sample is a real credential."
+          }
+        },
+        "required": [
+          "contract_version",
+          "expected_revision",
+          "expected_policy_digest",
+          "authority_attestation_jws"
+        ]
+      },
+      "RefundParameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "amount_minor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "currency": {
+            "const": "USD"
+          },
+          "fee_item_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "reason_code": {
+            "const": "BANK_PROCESSING_ERROR"
+          }
+        },
+        "required": [
+          "amount_minor",
+          "currency",
+          "fee_item_ids",
+          "reason_code"
+        ]
+      },
+      "ActionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "workflow_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "case_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "action": {
+            "const": "POST_FEE_REFUND"
+          },
+          "tool_id": {
+            "const": "core.refund.v1"
+          },
+          "resource": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "account_ref": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              "case_version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              }
+            },
+            "required": [
+              "account_ref",
+              "case_version"
+            ]
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/RefundParameters"
+          }
+        },
+        "required": [
+          "contract_version",
+          "workflow_id",
+          "case_id",
+          "action",
+          "tool_id",
+          "resource",
+          "parameters"
+        ]
+      },
+      "WorkloadIdentity": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2048
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "tenant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "production"
+            ]
+          },
+          "audience": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "certificate_thumbprint": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "authenticated_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          }
+        },
+        "required": [
+          "issuer",
+          "subject",
+          "tenant_id",
+          "environment",
+          "audience",
+          "certificate_thumbprint",
+          "authenticated_at"
+        ]
+      },
+      "CanonicalIntent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "request": {
+            "$ref": "#/components/schemas/ActionRequest"
+          },
+          "workload": {
+            "$ref": "#/components/schemas/WorkloadIdentity"
+          },
+          "request_maker_subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/VersionRef"
+          },
+          "delegation": {
+            "$ref": "#/components/schemas/GrantRef"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "resource_versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceVersion"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "business_operation_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "target": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "adapter_id": {
+                "const": "core.refund.v1"
+              },
+              "method": {
+                "const": "POST"
+              },
+              "operation": {
+                "const": "post_fee_refund"
+              },
+              "schema_version": {
+                "const": "1.0.0"
+              }
+            },
+            "required": [
+              "adapter_id",
+              "method",
+              "operation",
+              "schema_version"
+            ]
+          }
+        },
+        "required": [
+          "contract_version",
+          "request_id",
+          "request",
+          "workload",
+          "request_maker_subject",
+          "policy",
+          "delegation",
+          "source_refs",
+          "resource_versions",
+          "business_operation_key",
+          "target"
+        ]
+      },
+      "ApprovalBinding": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "tenant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "action_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/VersionRef"
+          },
+          "delegation": {
+            "$ref": "#/components/schemas/GrantRef"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "resource_versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceVersion"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          }
+        },
+        "required": [
+          "tenant_id",
+          "request_id",
+          "action_digest",
+          "policy",
+          "delegation",
+          "source_refs",
+          "resource_versions"
+        ]
+      },
+      "ApprovalSubmission": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "approval_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVE",
+              "REJECT",
+              "WITHDRAW"
+            ]
+          },
+          "binding": {
+            "$ref": "#/components/schemas/ApprovalBinding"
+          },
+          "attestation_jws": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 16384,
+            "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$",
+            "description": "Compact JWS syntax only; cryptographic verification is mandatory at runtime. No sample is a real credential."
+          },
+          "reason_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          }
+        },
+        "required": [
+          "contract_version",
+          "approval_id",
+          "decision",
+          "binding",
+          "attestation_jws",
+          "reason_code"
+        ]
+      },
+      "ApprovalRecord": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "approval_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "APPROVE",
+              "REJECT",
+              "WITHDRAW"
+            ]
+          },
+          "binding": {
+            "$ref": "#/components/schemas/ApprovalBinding"
+          },
+          "attestation_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "approver_issuer": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2048
+          },
+          "approver_subject": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "verified_role": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "acr": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "auth_time": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "decided_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "reason_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          }
+        },
+        "required": [
+          "contract_version",
+          "approval_id",
+          "decision",
+          "binding",
+          "attestation_digest",
+          "approver_issuer",
+          "approver_subject",
+          "verified_role",
+          "acr",
+          "auth_time",
+          "decided_at",
+          "expires_at",
+          "reason_code"
+        ]
+      },
+      "PermitClaims": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "iss": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2048
+          },
+          "aud": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "sub": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "tenant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "environment": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "production"
+            ]
+          },
+          "jti": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "iat": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "nbf": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "exp": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "action_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/VersionRef"
+          },
+          "delegation": {
+            "$ref": "#/components/schemas/GrantRef"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "resource_versions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResourceVersion"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "business_operation_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "approval": {
+            "oneOf": [
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "approval_id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                  },
+                  "attestation_digest": {
+                    "type": "string",
+                    "pattern": "^sha256:[0-9a-f]{64}$"
+                  }
+                },
+                "required": [
+                  "approval_id",
+                  "attestation_digest"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cnf": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "x5t#S256": {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9_-]{43}$"
+              }
+            },
+            "required": [
+              "x5t#S256"
+            ]
+          }
+        },
+        "required": [
+          "contract_version",
+          "iss",
+          "aud",
+          "sub",
+          "tenant_id",
+          "environment",
+          "jti",
+          "iat",
+          "nbf",
+          "exp",
+          "action_digest",
+          "policy",
+          "delegation",
+          "source_refs",
+          "resource_versions",
+          "business_operation_key",
+          "approval",
+          "cnf"
+        ]
+      },
+      "PermitEnvelope": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "permit_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "expires_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "compact_jws": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 16384,
+            "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$",
+            "description": "Compact JWS syntax only; cryptographic verification is mandatory at runtime. No sample is a real credential."
+          }
+        },
+        "required": [
+          "permit_id",
+          "expires_at",
+          "compact_jws"
+        ]
+      },
+      "DecisionResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "decision_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "disposition": {
+            "type": "string",
+            "enum": [
+              "ALLOW",
+              "REQUIRE_APPROVAL",
+              "DENY",
+              "FALLBACK"
+            ]
+          },
+          "reason_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "action_digest": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "policy": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VersionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "delegation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GrantRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approval_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "permit": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PermitEnvelope"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "contract_version",
+          "request_id",
+          "decision_id",
+          "disposition",
+          "reason_code",
+          "action_digest",
+          "policy",
+          "delegation",
+          "approval_id",
+          "permit"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "const": "ALLOW"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "permit": {
+                  "$ref": "#/components/schemas/PermitEnvelope"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "enum": [
+                    "REQUIRE_APPROVAL",
+                    "DENY",
+                    "FALLBACK"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "permit": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "const": "REQUIRE_APPROVAL"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "approval_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "disposition": {
+                  "enum": [
+                    "ALLOW",
+                    "REQUIRE_APPROVAL"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "action_digest": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                },
+                "policy": {
+                  "$ref": "#/components/schemas/VersionRef"
+                },
+                "delegation": {
+                  "$ref": "#/components/schemas/GrantRef"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "ExecutionRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "action_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "permit_jws": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 16384,
+            "pattern": "^[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+$",
+            "description": "Compact JWS syntax only; cryptographic verification is mandatory at runtime. No sample is a real credential."
+          }
+        },
+        "required": [
+          "contract_version",
+          "request_id",
+          "action_digest",
+          "permit_jws"
+        ]
+      },
+      "Receipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "provider": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "receipt_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "business_operation_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "amount_minor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "currency": {
+            "const": "USD"
+          },
+          "account_ref": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "committed_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          }
+        },
+        "required": [
+          "provider",
+          "receipt_id",
+          "business_operation_key",
+          "amount_minor",
+          "currency",
+          "account_ref",
+          "committed_at"
+        ]
+      },
+      "ExecutionResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "execution_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "business_operation_key": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "RESERVED",
+              "DISPATCHED",
+              "SUCCEEDED",
+              "FAILED_CONFIRMED",
+              "UNKNOWN",
+              "RECONCILED"
+            ]
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "APPLIED",
+              "NOT_APPLIED",
+              "UNRESOLVED"
+            ]
+          },
+          "receipt": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Receipt"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          }
+        },
+        "required": [
+          "contract_version",
+          "execution_id",
+          "request_id",
+          "business_operation_key",
+          "status",
+          "outcome",
+          "receipt",
+          "reason_code"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "SUCCEEDED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "outcome": {
+                  "const": "APPLIED"
+                },
+                "receipt": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "FAILED_CONFIRMED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "outcome": {
+                  "const": "NOT_APPLIED"
+                },
+                "receipt": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "UNKNOWN"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "outcome": {
+                  "const": "UNRESOLVED"
+                },
+                "receipt": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "RESERVED",
+                    "DISPATCHED"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "outcome": {
+                  "const": "PENDING"
+                },
+                "receipt": {
+                  "type": "null"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "RECONCILED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "APPLIED",
+                    "NOT_APPLIED"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "APPLIED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "receipt": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "NOT_APPLIED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "receipt": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "RevocationRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "target_type": {
+            "type": "string",
+            "enum": [
+              "AGENT",
+              "GRANT",
+              "POLICY",
+              "PERMIT"
+            ]
+          },
+          "target_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "expected_epoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "reason_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "source_ref": {
+            "$ref": "#/components/schemas/SourceRef"
+          }
+        },
+        "required": [
+          "contract_version",
+          "target_type",
+          "target_id",
+          "expected_epoch",
+          "reason_code",
+          "source_ref"
+        ]
+      },
+      "RevocationReceipt": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "revocation_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "target_type": {
+            "type": "string",
+            "enum": [
+              "AGENT",
+              "GRANT",
+              "POLICY",
+              "PERMIT"
+            ]
+          },
+          "target_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "committed_epoch": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "acknowledged_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "effective_boundary": {
+            "const": "DISPATCH_ADMISSION"
+          },
+          "inflight_cancellation_guaranteed": {
+            "const": false
+          }
+        },
+        "required": [
+          "contract_version",
+          "revocation_id",
+          "target_type",
+          "target_id",
+          "committed_epoch",
+          "acknowledged_at",
+          "effective_boundary",
+          "inflight_cancellation_guaranteed"
+        ]
+      },
+      "EvidenceEvent": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "DECISION",
+              "APPROVAL",
+              "REVOCATION",
+              "EXECUTION",
+              "RECONCILIATION"
+            ]
+          },
+          "tenant_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "workflow_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "request_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "decision_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "permit_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approval_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "execution_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "revocation_id": {
+            "oneOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "source_refs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceRef"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "policy": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/VersionRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "delegation": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GrantRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "action_digest": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "disposition": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "ALLOW",
+                  "REQUIRE_APPROVAL",
+                  "DENY",
+                  "FALLBACK"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "execution_status": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "RESERVED",
+                  "DISPATCHED",
+                  "SUCCEEDED",
+                  "FAILED_CONFIRMED",
+                  "UNKNOWN",
+                  "RECONCILED"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "outcome": {
+            "oneOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "PENDING",
+                  "APPLIED",
+                  "NOT_APPLIED",
+                  "UNRESOLVED"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "receipt": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Receipt"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "reason_code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "evidence_uri": {
+            "type": "string",
+            "format": "uri",
+            "maxLength": 2048
+          },
+          "event_digest": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "previous_event_digest": {
+            "oneOf": [
+              {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "contract_version",
+          "event_id",
+          "event_type",
+          "tenant_id",
+          "workflow_id",
+          "request_id",
+          "decision_id",
+          "permit_id",
+          "approval_id",
+          "execution_id",
+          "revocation_id",
+          "recorded_at",
+          "source_refs",
+          "policy",
+          "delegation",
+          "action_digest",
+          "disposition",
+          "execution_status",
+          "outcome",
+          "receipt",
+          "reason_code",
+          "evidence_uri",
+          "event_digest",
+          "previous_event_digest"
+        ],
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "event_type": {
+                  "const": "DECISION"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "request_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                },
+                "decision_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                },
+                "disposition": {
+                  "type": "string",
+                  "enum": [
+                    "ALLOW",
+                    "REQUIRE_APPROVAL",
+                    "DENY",
+                    "FALLBACK"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "event_type": {
+                  "const": "APPROVAL"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "request_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                },
+                "approval_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "event_type": {
+                  "const": "REVOCATION"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "revocation_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "event_type": {
+                  "const": "EXECUTION"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "request_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                },
+                "execution_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                },
+                "execution_status": {
+                  "type": "string",
+                  "enum": [
+                    "RESERVED",
+                    "DISPATCHED",
+                    "SUCCEEDED",
+                    "FAILED_CONFIRMED",
+                    "UNKNOWN",
+                    "RECONCILED"
+                  ]
+                },
+                "outcome": {
+                  "type": "string",
+                  "enum": [
+                    "PENDING",
+                    "APPLIED",
+                    "NOT_APPLIED",
+                    "UNRESOLVED"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "event_type": {
+                  "const": "RECONCILIATION"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "request_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                },
+                "execution_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128,
+                  "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+                },
+                "execution_status": {
+                  "const": "RECONCILED"
+                },
+                "outcome": {
+                  "type": "string",
+                  "enum": [
+                    "APPLIED",
+                    "NOT_APPLIED"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "const": "APPLIED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "receipt": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "execution_status": {
+                  "const": "SUCCEEDED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "outcome": {
+                  "const": "APPLIED"
+                },
+                "receipt": {
+                  "$ref": "#/components/schemas/Receipt"
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "outcome": {
+                  "enum": [
+                    "PENDING",
+                    "UNRESOLVED",
+                    "NOT_APPLIED"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "receipt": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "EvidenceAck": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "event_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "source_record_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "accepted_at": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "Z$"
+          },
+          "source_attachment_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          }
+        },
+        "required": [
+          "contract_version",
+          "event_id",
+          "source_record_id",
+          "accepted_at",
+          "source_attachment_id"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "contract_version": {
+            "const": "1.0.0"
+          },
+          "error": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "correlation_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "retryable": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "contract_version",
+          "error",
+          "correlation_id",
+          "message",
+          "retryable"
+        ]
+      }
+    }
+  }
+}

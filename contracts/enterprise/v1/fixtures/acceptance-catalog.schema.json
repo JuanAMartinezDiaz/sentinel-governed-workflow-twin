@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "catalog_version": {
+      "const": "1.0.0"
+    },
+    "oracle_origin": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1000
+    },
+    "runtime_execution": {
+      "const": "NOT_IMPLEMENTED"
+    },
+    "cases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^A[0-9]{2}$"
+          },
+          "family": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+          },
+          "requirement_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^R[0-9]{2}$"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": true
+          },
+          "setup": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "sequence": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+            },
+            "minItems": 1,
+            "maxItems": 100,
+            "uniqueItems": false
+          },
+          "expected": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "result": {
+                "type": "string",
+                "enum": [
+                  "REQUIRE_APPROVAL",
+                  "SUCCEEDED",
+                  "DENY",
+                  "REJECT",
+                  "RECONCILED",
+                  "DEDUPLICATED",
+                  "ONE_SUCCEEDED_ONE_DENIED",
+                  "UNAVAILABLE",
+                  "PRECONDITION_FAILED",
+                  "CONFLICT"
+                ]
+              },
+              "reason_code": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._:/-]*$"
+              },
+              "new_business_effects": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "permit": {
+                "type": "string",
+                "enum": [
+                  "NONE",
+                  "ISSUED_AND_CONSUMED",
+                  "REJECTED",
+                  "ALREADY_CONSUMED"
+                ]
+              }
+            },
+            "required": [
+              "result",
+              "reason_code",
+              "new_business_effects",
+              "permit"
+            ]
+          },
+          "baseline_overrides": {
+            "type": "object",
+            "additionalProperties": true
+          },
+          "runtime_status": {
+            "const": "NOT_RUN"
+          }
+        },
+        "required": [
+          "id",
+          "family",
+          "requirement_ids",
+          "setup",
+          "sequence",
+          "expected",
+          "baseline_overrides",
+          "runtime_status"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 100,
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "catalog_version",
+    "oracle_origin",
+    "runtime_execution",
+    "cases"
+  ]
+}
