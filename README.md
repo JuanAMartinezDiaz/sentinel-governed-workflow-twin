@@ -94,6 +94,27 @@ The protected executor rejects direct execution unless the action carries a vali
 
 ## Quick start
 
+### Safety monitoring during twin creation
+
+The [safety-monitoring design tool](docs/safety-monitoring.md) generates a versioned
+companion for each workflow step covering six monitoring goals. It binds the
+design to the exact workflow content and reports unresolved owners, signals,
+rules and acceptance requirements. A five-step synthetic dispute fixture is
+included. This increment validates design documents; runtime monitors and
+operational acceptance are not connected, and release remains blocked.
+
+```bash
+python -m scripts.safety_monitoring check \
+  --workflow examples/synthetic_dispute_monitoring_workflow.json \
+  --workflow-version synthetic-dispute-v1 \
+  --specification examples/synthetic_dispute_monitoring_specification.json
+```
+
+Install the development dependencies below first. The included draft deliberately
+returns exit code 2 because ownership and integration details remain unresolved.
+
+### Run the existing reference demo
+
 ```bash
 git clone https://github.com/JuanAMartinezDiaz/sentinel-governed-workflow-twin.git
 cd sentinel-governed-workflow-twin
