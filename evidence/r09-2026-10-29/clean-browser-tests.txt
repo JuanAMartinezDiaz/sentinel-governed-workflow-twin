@@ -1,0 +1,118 @@
+TAP version 13
+# Subtest: visual selection read sends only its fixed API scenario
+ok 1 - visual selection read sends only its fixed API scenario
+  ---
+  duration_ms: 2.645188
+  type: 'test'
+  ...
+# Subtest: visual selection high sends only its fixed API scenario
+ok 2 - visual selection high sends only its fixed API scenario
+  ---
+  duration_ms: 0.424515
+  type: 'test'
+  ...
+# Subtest: visual selection approved sends only its fixed API scenario
+ok 3 - visual selection approved sends only its fixed API scenario
+  ---
+  duration_ms: 0.283714
+  type: 'test'
+  ...
+# Subtest: visual selection bypass sends only its fixed API scenario
+ok 4 - visual selection bypass sends only its fixed API scenario
+  ---
+  duration_ms: 0.178833
+  type: 'test'
+  ...
+# Subtest: visual selection confidence sends only its fixed API scenario
+ok 5 - visual selection confidence sends only its fixed API scenario
+  ---
+  duration_ms: 0.299235
+  type: 'test'
+  ...
+# Subtest: visual selection tool sends only its fixed API scenario
+ok 6 - visual selection tool sends only its fixed API scenario
+  ---
+  duration_ms: 0.168305
+  type: 'test'
+  ...
+# Subtest: older success cannot overwrite the latest selection
+ok 7 - older success cannot overwrite the latest selection
+  ---
+  duration_ms: 0.48978
+  type: 'test'
+  ...
+# Subtest: older failure cannot replace the latest connected status
+ok 8 - older failure cannot replace the latest connected status
+  ---
+  duration_ms: 0.814534
+  type: 'test'
+  ...
+# Subtest: offline retains the illustrative fallback
+ok 9 - offline retains the illustrative fallback
+  ---
+  duration_ms: 0.660341
+  type: 'test'
+  ...
+# Subtest: HTTP error retains the illustrative fallback
+ok 10 - HTTP error retains the illustrative fallback
+  ---
+  duration_ms: 0.644437
+  type: 'test'
+  ...
+# Subtest: invalid JSON retains the illustrative fallback
+ok 11 - invalid JSON retains the illustrative fallback
+  ---
+  duration_ms: 0.51154
+  type: 'test'
+  ...
+# Subtest: wrong scenario retains the illustrative fallback
+ok 12 - wrong scenario retains the illustrative fallback
+  ---
+  duration_ms: 0.863047
+  type: 'test'
+  ...
+# Subtest: wrong mode retains the illustrative fallback
+ok 13 - wrong mode retains the illustrative fallback
+  ---
+  duration_ms: 0.191234
+  type: 'test'
+  ...
+# Subtest: unexpected decision retains the illustrative fallback
+ok 14 - unexpected decision retains the illustrative fallback
+  ---
+  duration_ms: 0.163121
+  type: 'test'
+  ...
+# Subtest: missing evidence retains the illustrative fallback
+ok 15 - missing evidence retains the illustrative fallback
+  ---
+  duration_ms: 0.176497
+  type: 'test'
+  ...
+# Subtest: malformed trace retains the illustrative fallback
+ok 16 - malformed trace retains the illustrative fallback
+  ---
+  duration_ms: 0.187105
+  type: 'test'
+  ...
+# Subtest: a stalled request times out and releases the pending status
+ok 17 - a stalled request times out and releases the pending status
+  ---
+  duration_ms: 8.635474
+  type: 'test'
+  ...
+# Subtest: unknown visual selections never submit an arbitrary scenario
+ok 18 - unknown visual selections never submit an arbitrary scenario
+  ---
+  duration_ms: 0.21373
+  type: 'test'
+  ...
+1..18
+# tests 18
+# suites 0
+# pass 18
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 61.539157
